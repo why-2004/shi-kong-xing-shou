@@ -121,7 +121,7 @@ Intro:
 
 Intro_StartingScreen:
 	call DelayFrame
-	call Func_077_4d06
+	call Intro_ClearSprites
 
 ; increase screen counter
 	ldh a, [hFF9D]
@@ -372,8 +372,8 @@ TitleScreen:
 	jr nz, .jump_to_game
 	call TitleScreen_PaletteCycle
 	call TitleScreen_DoSpriteAnimations
-	call Func_077_45b4
-	call Func_077_456e
+	call TitleScreen_DoSpriteAnimations2
+	call TitleScreen_DoSpriteAnimations3
 	ld a, [wdcf5]
 	cp 1
 	jr z, .asm_42fb
@@ -500,9 +500,7 @@ asm_077_4394:
 	ret nz
 	ld a, 1
 	ld [wd9d2], a
-	ld hl, $4000
-	ld b, $3c
-	rst FarCall
+	farcall unk_03c_4000
 	xor a
 	ld [wTargetMode], a
 	ret
@@ -719,38 +717,42 @@ TitleScreen_PaletteCycle:
 	ret
 
 .Palettes:
-	dw $7fff
-	dw $7ef7
-	dw $790d
-	dw $1400
-	dw $790d
-	dw $7fff
-	dw $7ef7
-	dw $1400
-	dw $7ef7
-	dw $790d
-	dw $7fff
-	dw $1400
+; frame 0
+	RGB 31, 31, 31
+	RGB 23, 23, 31
+	RGB 13, 08, 30
+	RGB 00, 00, 05
 
-Func_077_456e:
+; frame 1
+	RGB 13, 08, 30
+	RGB 31, 31, 31
+	RGB 23, 23, 31
+	RGB 00, 00, 05
+
+; frame 2
+	RGB 23, 23, 31
+	RGB 13, 08, 30
+	RGB 31, 31, 31
+	RGB 00, 00, 05
+
+TitleScreen_DoSpriteAnimations3:
 	ld a, [wcd60]
 	and a
 	ret z
 	and $80
-	jr nz, asm_077_457e
+	jr nz, .restart_animation
 	ldh a, [hFF9D]
 	and 1
 	ret nz
-	jr asm_077_458a
+	jr .animate
 
-asm_077_457e:
+.restart_animation
 	ld a, [wcd60]
 	and $7f
 	ld [wcd60], a
 	xor a
 	ld [wcd67], a
-
-asm_077_458a:
+.animate
 	ld a, [wcd60]
 	ld de, TitleScreen_SpriteAnimations
 	ld l, a
@@ -764,41 +766,41 @@ asm_077_458a:
 	ld e, a
 	ld d, 0
 	add hl, de
+; end if reaching the end byte
 	ld a, [hl]
-	cp $ff
-	jr nz, asm_077_45a9
+	cp -1
+	jr nz, .finished
 	xor a
 	ld [wcd67], a
 	ret
 
-asm_077_45a9:
+.finished
 	ld [wcd5f], a
 	ld a, [wcd67]
 	inc a
 	ld [wcd67], a
 	ret
 
-Func_077_45b4:
+TitleScreen_DoSpriteAnimations2:
 	ld a, [wcd5c]
 	and a
 	ret z
 	and $80
-	jr nz, asm_077_45c4
+	jr nz, .restart_animation
 	ldh a, [hFF9D]
 	and 1
 	ret nz
-	jr asm_077_45d0
+	jr .animate
 
-asm_077_45c4:
+.restart_animation
 	ld a, [wcd5c]
 	and $7f
 	ld [wcd5c], a
 	xor a
 	ld [wcd66], a
-
-asm_077_45d0:
+.animate
 	ld a, [wcd5c]
-	ld de, $4640
+	ld de, TitleScreen_SpriteAnimations
 	ld l, a
 	ld h, 0
 	add hl, hl
@@ -811,13 +813,13 @@ asm_077_45d0:
 	ld d, 0
 	add hl, de
 	ld a, [hl]
-	cp $ff
-	jr nz, asm_077_45ef
+	cp -1
+	jr nz, .finished
 	xor a
 	ld [wcd66], a
 	ret
 
-asm_077_45ef:
+.finished
 	ld [wcd5b], a
 	ld a, [wcd66]
 	inc a
@@ -835,14 +837,13 @@ TitleScreen_DoSpriteAnimations:
 	ret nz
 	jr .animate
 
-.restart_animation:
+.restart_animation
 	ld a, [wcd58]
 	and $7f
 	ld [wcd58], a
 	xor a
 	ld [wcd65], a
-
-.animate:
+.animate
 	ld a, [wcd58]
 	ld de, TitleScreen_SpriteAnimations
 	ld l, a
@@ -857,13 +858,13 @@ TitleScreen_DoSpriteAnimations:
 	ld d, 0
 	add hl, de
 	ld a, [hl]
-	cp $ff
+	cp -1
 	jr nz, .finished
 	xor a
 	ld [wcd65], a
 	ret
 
-.finished:
+.finished
 	ld [wcd57], a
 	ld a, [wcd65]
 	inc a
@@ -879,14 +880,14 @@ TitleScreen_SpriteAnimations:
 	dw .Cursor
 
 .Nothing:
-	db $ff
+	db -1
 
 .TitleScreen:
 	db $1
 	db $1
 	db $1
 	db $1
-	db $ff
+	db -1
 
 .PressStartText:
 	db $2
@@ -897,25 +898,25 @@ TitleScreen_SpriteAnimations:
 	db $0
 	db $0
 	db $0
-	db $ff
+	db -1
 
 .NewGameText:
 	db $3
 	db $3
 	db $3
-	db $ff
+	db -1
 
 .NewGameContinueText:
 	db $4
 	db $4
 	db $4
-	db $ff
+	db -1
 
 .Cursor:
 	db $5
 	db $5
 	db $5
-	db $ff
+	db -1
 
 TitleScreen_UpdateSprites:
 	ld hl, wVirtualOAM
@@ -1697,12 +1698,12 @@ Intro_InitStars:
 	ret nc
 	ld a, [wdcf6]
 	and a
-	jr z, .asm_077_4b81
+	jr z, .SpawnStar
 	dec a
 	ld [wdcf6], a
 	ret
 
-.asm_077_4b81
+.SpawnStar:
 	ld bc, wdd50
 .asm_077_4b84
 	ld hl, 3
@@ -1720,7 +1721,7 @@ Intro_InitStars:
 	ret
 
 .asm_077_4b98
-	ld de, .StarSprites
+	ld de, .StarParameters
 	ld a, [wdce8]
 	ld l, a
 	ld h, 0
@@ -1749,26 +1750,17 @@ Intro_InitStars:
 	ld [wdce8], a
 	ret
 
-.StarSprites:
-	dsprite 30,  0, 14,  0, $02, (OAMF_PAL1|OAMF_BANK1) + 0
-	dsprite  0,  1,  0,  0, $00, 0
-	dsprite  0,  0, 18,  0, $02, (OAMF_PAL1|OAMF_BANK1) + 0
-	dsprite  0,  1,  0,  0, $00, 0
-	dsprite 30,  0, 16,  0, $02, (OAMF_PAL1|OAMF_BANK1) + 0
-	dsprite  0,  1,  0,  0, $00, 0
-	dsprite  0,  0, 18,  0, $02, (OAMF_PAL1|OAMF_BANK1) + 0
-	dsprite  0,  1,  0,  0, $00, 0
-	dsprite 30,  0, 14,  0, $02, (OAMF_PAL1|OAMF_BANK1) + 0
-	dsprite  0,  1,  0,  0, $00, 0
-	dsprite  0,  0, 16,  0, $02, (OAMF_PAL1|OAMF_BANK1) + 0
-	dsprite  0,  1,  0,  0, $00, 0
-	dsprite 30,  0, 18,  0, $02, (OAMF_PAL1|OAMF_BANK1) + 0
-	dsprite  0,  2,  0,  0, $00, 0
-
+.StarParameters:
+	db $F0, $70, $02, $18, $01, $00, $00, $00
+	db $00, $90, $02, $18, $01, $00, $00, $00
+	db $F0, $80, $02, $18, $01, $00, $00, $00
+	db $00, $90, $02, $18, $01, $00, $00, $00
+	db $F0, $70, $02, $18, $01, $00, $00, $00
+	db $00, $80, $02, $18, $01, $00, $00, $00
+	db $F0, $90, $02, $18, $02, $00, $00, $00
 
 Intro_MoveStars:
 	ld bc, wdd50
-
 asm_077_4bfb:
 	ld hl, 3
 	add hl, bc
@@ -1787,7 +1779,7 @@ asm_077_4c03:
 	ret
 
 asm_077_4c0f:
-	ld de, unk_077_4c20
+	ld de, Jumptable_077_4c20
 	ld hl, 4
 	add hl, bc
 	ld a, [hl]
@@ -1800,15 +1792,15 @@ asm_077_4c0f:
 	ld l, a
 	jp hl
 
-unk_077_4c20:
-	dw asm_077_4c26
-	dw asm_077_4ccb
-	dw asm_077_4c78
+Jumptable_077_4c20:
+	dw .asm_077_4c26
+	dw .asm_077_4ccb
+	dw .asm_077_4c78
 
-asm_077_4c26:
+.asm_077_4c26:
 	ret
 
-unk_077_4c27:
+.unk_077_4c27:
 	dw $ff00
 	dw $fc03
 	dw $fc04
@@ -1851,15 +1843,15 @@ unk_077_4c27:
 	dw $fa06
 	db $88
 
-asm_077_4c78:
-	ld de, unk_077_4c27
+.asm_077_4c78:
+	ld de, .unk_077_4c27
 	ld a, [wdcf3]
 	ld l, a
 	ld h, 0
 	add hl, de
 	ld a, [hli]
 	cp $88
-	jr z, asm_077_4cbf
+	jr z, .asm_077_4cbf
 	ld e, a
 	ld a, [hli]
 	ld d, a
@@ -1877,11 +1869,11 @@ asm_077_4c78:
 	add hl, bc
 	ld a, [hl]
 	and a
-	jr z, asm_077_4ca3
+	jr z, .asm_077_4ca3
 	dec [hl]
-	jr asm_077_4cb4
+	jr .asm_077_4cb4
 
-asm_077_4ca3:
+.asm_077_4ca3:
 	ld [hl], 2
 	ld hl, 3
 	add hl, bc
@@ -1889,24 +1881,23 @@ asm_077_4ca3:
 	inc a
 	ld [hl], a
 	cp 5
-	jp c, asm_077_4cb4
+	jp c, .asm_077_4cb4
 	ld a, 1
 	ld [hl], a
-
-asm_077_4cb4:
+.asm_077_4cb4
 	ld a, [wdcf3]
 	add 2
 	ld [wdcf3], a
 	jp asm_077_4c03
 
-asm_077_4cbf:
+.asm_077_4cbf:
 	xor a
 	ld [wdcf3], a
 	ld a, 1
 	ld [hFade], a
 	jp asm_077_4c03
 
-asm_077_4ccb:
+.asm_077_4ccb:
 	ld hl, 1
 	add hl, bc
 	dec [hl]
@@ -1917,16 +1908,16 @@ asm_077_4ccb:
 	add 4
 	ld [hl], a
 	cp $a8
-	jr z, asm_077_4cfd
+	jr z, .asm_077_4cfd
 	ld hl, 2
 	add hl, bc
 	ld a, [hl]
 	and a
-	jr z, asm_077_4ce9
+	jr z, .asm_077_4ce9
 	dec [hl]
 	jp asm_077_4c03
 
-asm_077_4ce9:
+.asm_077_4ce9:
 	ld [hl], 2
 	ld hl, 3
 	add hl, bc
@@ -1939,30 +1930,29 @@ asm_077_4ce9:
 	ld [hl], a
 	jp asm_077_4c03
 
-asm_077_4cfd:
+.asm_077_4cfd:
 	ld hl, 3
 	add hl, bc
 	ld [hl], 0
 	jp asm_077_4c03
 
-Func_077_4d06:
-	ld hl, $c000
+Intro_ClearSprites:
+	ld hl, wVirtualOAM
 	ld bc, $28
 	ld de, 4
-
-asm_077_4d0f:
+.clear
 	ld a, $a0
 	ld [hl], a
 	add hl, de
 	dec c
-	jr nz, asm_077_4d0f
+	jr nz, .clear
 	xor a
 	ld [wd1fb], a
 	call Func_077_4d1e
 	ret
 
 Func_077_4d1e:
-	ld bc, $dd50
+	ld bc, wdd50
 
 asm_077_4d21:
 	ld hl, 3
@@ -1993,7 +1983,7 @@ asm_077_4d35:
 	ld hl, 3
 	add hl, bc
 	ld a, [hl]
-	ld de, unk_077_4d82
+	ld de, Intro_StarSprites
 	ld l, a
 	ld h, 0
 	add hl, hl
@@ -2037,153 +2027,56 @@ asm_077_4d7b:
 	ld [wd1fb], a
 	jp asm_077_4d29
 
-unk_077_4d82:
-	dw unk_077_4d8c
-	dw unk_077_4d8c
-	dw unk_077_4dad
-	dw unk_077_4dce
-	dw unk_077_4def
+Intro_StarSprites:
+	dw .Frame0
+	dw .Frame0
+	dw .Frame1
+	dw .Frame2
+	dw .Frame3
 
-unk_077_4d8c:
-	db $0
-	db $0
-	db $0
-	db $0
-	db $0
-	db $8
-	db $2
-	db $0
-	db $0
-	db $10
-	db $4
-	db $0
-	db $0
-	db $18
-	db $6
-	db $0
-	db $10
-	db $0
-	db $8
-	db $0
-	db $10
-	db $8
-	db $a
-	db $0
-	db $10
-	db $10
-	db $c
-	db $0
-	db $10
-	db $18
-	db $e
-	db $0
-	db $ff
+.Frame0:
+	dsprite  0,  0,  0,  0, $00, 0
+	dsprite  0,  0,  1,  0, $02, 0
+	dsprite  0,  0,  2,  0, $04, 0
+	dsprite  0,  0,  3,  0, $06, 0
+	dsprite  2,  0,  0,  0, $08, 0
+	dsprite  2,  0,  1,  0, $0a, 0
+	dsprite  2,  0,  2,  0, $0c, 0
+	dsprite  2,  0,  3,  0, $0e, 0
+	db -1 ; end
 
-unk_077_4dad:
-	db $0
-	db $0
-	db $10
-	db $0
-	db $0
-	db $8
-	db $12
-	db $0
-	db $0
-	db $10
-	db $14
-	db $0
-	db $0
-	db $18
-	db $16
-	db $0
-	db $10
-	db $0
-	db $18
-	db $0
-	db $10
-	db $8
-	db $1a
-	db $0
-	db $10
-	db $10
-	db $1c
-	db $0
-	db $10
-	db $18
-	db $1e
-	db $0
-	db $ff
+.Frame1:
+	dsprite  0,  0,  0,  0, $10, 0
+	dsprite  0,  0,  1,  0, $12, 0
+	dsprite  0,  0,  2,  0, $14, 0
+	dsprite  0,  0,  3,  0, $16, 0
+	dsprite  2,  0,  0,  0, $18, 0
+	dsprite  2,  0,  1,  0, $1a, 0
+	dsprite  2,  0,  2,  0, $1c, 0
+	dsprite  2,  0,  3,  0, $1e, 0
+	db -1 ; end
 
-unk_077_4dce:
-	db $0
-	db $0
-	db $20
-	db $0
-	db $0
-	db $8
-	db $22
-	db $0
-	db $0
-	db $10
-	db $24
-	db $0
-	db $0
-	db $18
-	db $26
-	db $0
-	db $10
-	db $0
-	db $28
-	db $0
-	db $10
-	db $8
-	db $2a
-	db $0
-	db $10
-	db $10
-	db $2c
-	db $0
-	db $10
-	db $18
-	db $2e
-	db $0
-	db $ff
+.Frame2:
+	dsprite  0,  0,  0,  0, $20, 0
+	dsprite  0,  0,  1,  0, $22, 0
+	dsprite  0,  0,  2,  0, $24, 0
+	dsprite  0,  0,  3,  0, $26, 0
+	dsprite  2,  0,  0,  0, $28, 0
+	dsprite  2,  0,  1,  0, $2a, 0
+	dsprite  2,  0,  2,  0, $2c, 0
+	dsprite  2,  0,  3,  0, $2e, 0
+	db -1 ; end
 
-unk_077_4def:
-	db $0
-	db $0
-	db $30
-	db $0
-	db $0
-	db $8
-	db $32
-	db $0
-	db $0
-	db $10
-	db $34
-	db $0
-	db $0
-	db $18
-	db $36
-	db $0
-	db $10
-	db $0
-	db $38
-	db $0
-	db $10
-	db $8
-	db $3a
-	db $0
-	db $10
-	db $10
-	db $3c
-	db $0
-	db $10
-	db $18
-	db $3e
-	db $0
-	db $ff
-
+.Frame3:
+	dsprite  0,  0,  0,  0, $30, 0
+	dsprite  0,  0,  1,  0, $32, 0
+	dsprite  0,  0,  2,  0, $34, 0
+	dsprite  0,  0,  3,  0, $36, 0
+	dsprite  2,  0,  0,  0, $38, 0
+	dsprite  2,  0,  1,  0, $3a, 0
+	dsprite  2,  0,  2,  0, $3c, 0
+	dsprite  2,  0,  3,  0, $3e, 0
+	db -1 ; end
 
 Intro_LoadNewTextSprites:
 	ld hl, wVirtualOAM
