@@ -30,9 +30,11 @@ BellObservatory2_MapAttributes:
 	map_attributes BellObservatory1, BELL_OBSERVATORY_1, 0, Tileset_006_405a
 
 BellSchoolNorthClassroom_MapAttributes:
-	map_attributes BellSchoolSouthClassroom, BELL_SCHOOL_SOUTH_CLASSROOM, 0, Tileset_006_403b
+BellSchoolSouthClassroom1_MapAttributes:
+BellSchoolSouthClassroom2_MapAttributes:
+	map_attributes BellSchoolSouthClassroom, BELL_SCHOOL_SOUTH_CLASSROOM_1, 0, Tileset_006_403b
 
-unk_001_40dc:
+TechCity_MapAttributes:
 	db 18, 12
 	dw Layout_001_600d
 	dw Blocks_001_61a2
@@ -116,7 +118,7 @@ unk_001_4154:
 	dw 0
 	dw Collision_001_5fd4
 
-unk_001_4168:
+TechShop_MapAttributes:
 	db 6, 5
 	dw Layout_001_5a28
 	dw Blocks_001_5ab3
@@ -128,7 +130,7 @@ unk_001_4168:
 	dw 0
 	dw Collision_001_5b9d
 
-unk_001_417c:
+TechHealingCenter_MapAttributes:
 	db 6, 5
 	dw Layout_001_58a7
 	dw Blocks_001_592a
@@ -140,7 +142,7 @@ unk_001_417c:
 	dw 0
 	dw Collision_001_5a0f
 
-unk_001_4190:
+CrystalVillage_MapAttributes:
 	db 12, 10
 	dw Layout_001_5484
 	dw Blocks_001_55e1
@@ -212,7 +214,7 @@ unk_001_41f4:
 	dw 0
 	dw Collision_001_544a
 
-unk_001_4208:
+CrystalHealingCenter_MapAttributes:
 	db 6, 5
 	dw Layout_001_4eeb
 	dw Blocks_001_4f76
@@ -224,7 +226,7 @@ unk_001_4208:
 	dw 0
 	dw Collision_001_505b
 
-unk_001_421c:
+Junkyard_MapAttributes:
 	db 6, 5
 	dw Layout_001_4cff
 	dw Blocks_001_4d9e

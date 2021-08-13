@@ -22,7 +22,7 @@ unk_017_475f::
 unk_017_4a09::
 	dr $5ca09, $5ccae
 
-unk_017_4cae::
+BlueMoon_MapAttributes::
 	dr $5ccae, $5cf9e
 
 gfx_017_4f9e::

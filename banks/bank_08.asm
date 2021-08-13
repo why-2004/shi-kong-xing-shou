@@ -419,7 +419,7 @@ Script_008_43f1:
 	scr_04 text_08_5001
 	scr_end
 
-BellSchoolSouthClassroom_ObjectEvents:
+BellSchoolSouthClassroom1_ObjectEvents:
 	dr $203f5, $2040c
 
 Script_008_440c:
