@@ -461,7 +461,7 @@ Junkyard_Header::
 
 PowerPlantOutside_Header::
 	; map XXXXX
-	dbaw2 unk_001_4230
+	dbaw2 PowerPlantOutside_MapAttributes
 	warp  7, 0, $2068, unk_00f_40c2, unk_007_4cd0
 	warp  0, 0, $7058, unk_00f_40c2, unk_007_4cd0
 	warp  0, 0, $8088, unk_00f_40ab, unk_007_4cd0
@@ -492,7 +492,7 @@ PowerPlant4F_Header::
 
 Hideout_Header::
 	; map XXXXX
-	dbaw2 unk_001_4294
+	dbaw2 Hideout_MapAttributes
 	warp  13, 7, $9088, unk_00e_4a1a, unk_007_4d17
 
 CrystalMines1_Header::

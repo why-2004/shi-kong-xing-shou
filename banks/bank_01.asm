@@ -36,15 +36,15 @@ BellSchoolSouthClassroom2_MapAttributes:
 
 TechCity_MapAttributes:
 	db 18, 12
-	dw Layout_001_600d
-	dw Blocks_001_61a2
-	dw Metatiles_001_60e6
-	dw AttrMap_001_636a
-	dw Palettes_001_63eb
+	dw TechCity_Layout
+	dw TechCity_Blocks
+	dw TechCity_Metatiles
+	dw TechCity_AttrMap
+	dw TechCity_Palettes
 	dw 0
 	dw Tileset_006_4070
 	dw 0
-	dw Collision_001_6433
+	dw TechCity_Collision
 
 unk_001_40f0:
 	db 6, 5
@@ -144,15 +144,15 @@ TechHealingCenter_MapAttributes:
 
 CrystalVillage_MapAttributes:
 	db 12, 10
-	dw Layout_001_5484
-	dw Blocks_001_55e1
-	dw Metatiles_001_54fd
-	dw AttrMap_001_5785
-	dw Palettes_001_5826
+	dw CrystalVillage_Layout
+	dw CrystalVillage_Blocks
+	dw CrystalVillage_Metatiles
+	dw CrystalVillage_AttrMap
+	dw CrystalVillage_Palettes
 	dw 0
 	dw Tileset_006_408f
 	dw 0
-	dw Collision_001_586e
+	dw CrystalVillage_Collision
 
 unk_001_41a4:
 	db 6, 5
@@ -228,27 +228,27 @@ CrystalHealingCenter_MapAttributes:
 
 Junkyard_MapAttributes:
 	db 6, 5
-	dw Layout_001_4cff
-	dw Blocks_001_4d9e
-	dw Metatiles_001_4d1e
-	dw AttrMap_001_4e12
-	dw Palettes_001_4e83
+	dw Junkyard_Layout
+	dw Junkyard_Blocks
+	dw Junkyard_Metatiles
+	dw Junkyard_AttrMap
+	dw Junkyard_Palettes
 	dw 0
 	dw Tileset_006_40ca
 	dw 0
-	dw Collision_001_4ecb
+	dw Junkyard_Collision
 
-unk_001_4230:
+PowerPlantOutside_MapAttributes:
 	db 12, 5
-	dw Layout_001_4a26
-	dw Blocks_001_4b23
-	dw Metatiles_001_4a63
-	dw AttrMap_001_4be7
-	dw Palettes_001_4c88
+	dw PowerPlantOutside_Layout
+	dw PowerPlantOutside_Blocks
+	dw PowerPlantOutside_Metatiles
+	dw PowerPlantOutside_AttrMap
+	dw PowerPlantOutside_Palettes
 	dw 0
 	dw Tileset_006_40f9
 	dw 0
-	dw Collision_001_4cd0
+	dw PowerPlantOutside_Collision
 
 unk_001_4244:
 	db 6, 5
@@ -298,34 +298,35 @@ unk_001_4280:
 	dw 0
 	dw Collision_001_49ee
 
-unk_001_4294:
+Hideout_MapAttributes:
 	db 18, 12
-	dw Layout_001_42a8
-	dw Blocks_001_4439
-	dw Metatiles_001_4381
-	dw AttrMap_001_45a9
-	dw Palettes_001_460a
+	dw Hideout_Layout
+	dw Hideout_Blocks
+	dw Hideout_Metatiles
+	dw Hideout_AttrMap
+	dw Hideout_Palettes
 	dw 0
 	dw Tileset_006_40da
 	dw 0
-	dw Collision_001_4652
+	dw Hideout_Collision
 
-Layout_001_42a8:
-	dr $42a8, $4381
+Hideout_Layout:
+	db 14
+INCBIN "data/maps/layouts/Hideout.bin"
 
-Metatiles_001_4381:
-	dr $4381, $4439
+Hideout_Metatiles:
+INCBIN "data/maps/metatiles/Hideout.bin"
 
-Blocks_001_4439:
-	dr $4439, $45a9
+Hideout_Blocks:
+INCBIN "data/maps/blocks/Hideout.bin"
 
-AttrMap_001_45a9:
+Hideout_AttrMap:
 	dr $45a9, $460a
 
-Palettes_001_460a:
+Hideout_Palettes:
 	dr $460a, $4652
 
-Collision_001_4652:
+Hideout_Collision:
 	dr $4652, $4681
 
 Layout_001_4681:
@@ -364,40 +365,42 @@ Palettes_001_49a6:
 Collision_001_49ee:
 	dr $49ee, $4a26
 
-Layout_001_4a26:
-	dr $4a26, $4a63
+PowerPlantOutside_Layout:
+	db 0
+INCBIN "data/maps/layouts/PowerPlantOutside.bin"
 
-Metatiles_001_4a63:
-	dr $4a63, $4b23
+PowerPlantOutside_Metatiles:
+INCBIN "data/maps/metatiles/PowerPlantOutside.bin"
 
-Blocks_001_4b23:
-	dr $4b23, $4be7
+PowerPlantOutside_Blocks:
+INCBIN "data/maps/blocks/PowerPlantOutside.bin"
 
-AttrMap_001_4be7:
+PowerPlantOutside_AttrMap:
 	dr $4be7, $4c88
 
-Palettes_001_4c88:
+PowerPlantOutside_Palettes:
 	dr $4c88, $4cd0
 
-Collision_001_4cd0:
+PowerPlantOutside_Collision:
 	dr $4cd0, $4cff
 
-Layout_001_4cff:
-	dr $4cff, $4d1e
+Junkyard_Layout:
+	db 0
+INCBIN "data/maps/layouts/Junkyard.bin"
 
-Metatiles_001_4d1e:
-	dr $4d1e, $4d9e
+Junkyard_Metatiles:
+INCBIN "data/maps/metatiles/Junkyard.bin"
 
-Blocks_001_4d9e:
-	dr $4d9e, $4e12
+Junkyard_Blocks:
+INCBIN "data/maps/blocks/Junkyard.bin"
 
-AttrMap_001_4e12:
+Junkyard_AttrMap:
 	dr $4e12, $4e83
 
-Palettes_001_4e83:
+Junkyard_Palettes:
 	dr $4e83, $4ecb
 
-Collision_001_4ecb:
+Junkyard_Collision:
 	dr $4ecb, $4eeb
 
 Layout_001_4eeb:
@@ -460,22 +463,23 @@ Palettes_001_5402:
 Collision_001_544a:
 	dr $544a, $5484
 
-Layout_001_5484:
-	dr $5484, $54fd
+CrystalVillage_Layout:
+	db 0
+INCBIN "data/maps/layouts/CrystalVillage.bin"
 
-Metatiles_001_54fd:
-	dr $54fd, $55e1
+CrystalVillage_Metatiles:
+INCBIN "data/maps/metatiles/CrystalVillage.bin"
 
-Blocks_001_55e1:
-	dr $55e1, $5785
+CrystalVillage_Blocks:
+INCBIN "data/maps/blocks/CrystalVillage.bin"
 
-AttrMap_001_5785:
+CrystalVillage_AttrMap:
 	dr $5785, $5826
 
-Palettes_001_5826:
+CrystalVillage_Palettes:
 	dr $5826, $586e
 
-Collision_001_586e:
+CrystalVillage_Collision:
 	dr $586e, $58a7
 
 Layout_001_58a7:
@@ -562,22 +566,23 @@ Palettes_001_5f8c:
 Collision_001_5fd4:
 	dr $5fd4, $600d
 
-Layout_001_600d:
-	dr $600d, $60e6
+TechCity_Layout:
+	db 0
+INCBIN "data/maps/layouts/TechCity.bin"
 
-Metatiles_001_60e6:
-	dr $60e6, $61a2
+TechCity_Metatiles:
+INCBIN "data/maps/metatiles/TechCity.bin"
 
-Blocks_001_61a2:
-	dr $61a2, $636a
+TechCity_Blocks:
+INCBIN "data/maps/blocks/TechCity.bin"
 
-AttrMap_001_636a:
+TechCity_AttrMap:
 	dr $636a, $63eb
 
-Palettes_001_63eb:
+TechCity_Palettes:
 	dr $63eb, $6433
 
-Collision_001_6433:
+TechCity_Collision:
 	dr $6433, $6462
 
 BellSchoolSouthClassroom_Layout:
