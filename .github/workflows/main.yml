@@ -55,4 +55,4 @@ jobs:
         if: ${{ github.event_name == 'push' && ( ( github.repository_owner == 'ZoomTen' ) || ( github.repository_owner == 'libjet' ) ) }}
         env:
           CI_DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-        run: python3 .github/ok/webhook $CI_DISCORD_WEBHOOK
+        run: python3 .github/ok/webhook.py $CI_DISCORD_WEBHOOK
