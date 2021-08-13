@@ -11,7 +11,9 @@ gfx/cutscenes/meteor/*.2bpp
 gfx/tilesets/*.2bpp
 gfx/title_screen/*.2bpp
 gfx/intro/**/*.2bpp
-data/maps/**/*.bin
+data/maps/blocks/*.bin
+data/maps/layouts/*.bin
+data/maps/metatiles/*.bin
 
 # compiled roms
 *.gbc
