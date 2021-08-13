@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+    branches: [ progress ]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout disasm
+        uses: actions/checkout@master
+      
+      - name: Checkout rgbds
+        uses: actions/checkout@master
+        with:
+          path: rgbds
+          ref: v0.5.1
+          repository: gbdev/rgbds
+      
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y bison python3-pil
+      
+      - name: Install rgbds
+        working-directory: rgbds
+        run: |
+          sudo make install
+          rm -rf rgbds
+      
+      - name: Cache baserom
+        id:  cache-baserom
+        uses: actions/cache@master
+        with:
+          path: baserom.gbc
+          key: ${{ runner.os }}-baserom
+      
+      - name: Get baserom
+        if: steps.cache-baserom.outputs.cache-hit != 'true'
+        run: |
+          sudo apt install unzip wget
+          wget -O skxs.zip 'https://hhug.me/uploads/dumps/Shi%20Kong%20Xing%20Shou%20(Unlicensed,%20Chinese)%20(Multicart%20Rip)%20[Header%20Fix].zip'
+          unzip skxs.zip
+          mv 'Shi Kong Xing Shou (Unlicensed, Chinese) (Multicart Rip) [Header Fix].gbc' baserom.gbc
+          rm -f skxs.zip
+      
+      - name: Build
+        run: |
+          make
+          python3 .github/ok/ok.py
+      
+      - name: Run webhook
+        if: ${{ github.event_name == 'push' && ( ( github.repository_owner == 'ZoomTen' ) || ( github.repository_owner == 'libjet' ) ) }}
+        env:
+          CI_DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: python3 .github/ok/webhook $CI_DISCORD_WEBHOOK
