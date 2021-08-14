@@ -35,7 +35,7 @@ gfx_017_512e::
 INCBIN "gfx/tilesets/image_17_512e.2bpp"
 
 gfx_017_578e::
-	dr $5d78e, $5dc1e
+INCBIN "gfx/tilesets/image_17_578e.2bpp"
 
 gfx_017_5c1e::
 INCBIN "gfx/tilesets/image_17_5c1e.2bpp"

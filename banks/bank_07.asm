@@ -469,25 +469,25 @@ PowerPlantOutside_Header::
 
 PowerPlant1F_Header::
 	; map XXXXX
-	dbaw2 unk_001_4244
+	dbaw2 PowerPlant1F_MapAttributes
 	warp  1, 0, $9038, unk_00f_4160, unk_007_4ce3
 	warp  0, 0, $9028, unk_00f_4160, unk_007_4ce3
 
 PowerPlant2F_Header::
 	; map XXXXX
-	dbaw2 unk_001_4258
+	dbaw2 PowerPlant2F_MapAttributes
 	warp  0, 0, $9028, unk_00f_418d, unk_007_4cf0
 	warp  1, 0, $2078, unk_00f_418d, unk_007_4cf0
 
 PowerPlant3F_Header::
 	; map XXXXX
-	dbaw2 unk_001_426c
+	dbaw2 PowerPlant3F_MapAttributes
 	warp  1, 0, $2078, unk_00f_41af, unk_007_4cfd
 	warp  0, 0, $9028, unk_00f_41af, unk_007_4cfd
 
 PowerPlant4F_Header::
 	; map XXXXX
-	dbaw2 unk_001_4280
+	dbaw2 PowerPlant4F_MapAttributes
 	warp  0, 0, $9028, unk_00f_41dc, unk_007_4d0a
 
 Hideout_Header::

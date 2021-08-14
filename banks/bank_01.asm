@@ -250,53 +250,53 @@ PowerPlantOutside_MapAttributes:
 	dw 0
 	dw PowerPlantOutside_Collision
 
-unk_001_4244:
+PowerPlant1F_MapAttributes:
 	db 6, 5
-	dw Layout_001_4681
-	dw Blocks_001_46a0
-	dw Metatiles_001_480d
-	dw AttrMap_001_4955
-	dw Palettes_001_49a6
+	dw PowerPlant1F_Layout
+	dw PowerPlant1F_Blocks
+	dw PowerPlant_Metatiles
+	dw PowerPlant_AttrMap
+	dw PowerPlant_Palettes
 	dw 0
 	dw Tileset_006_40d2
 	dw 0
-	dw Collision_001_49ee
+	dw PowerPlant_Collision
 
-unk_001_4258:
+PowerPlant2F_MapAttributes:
 	db 6, 5
-	dw Layout_001_4704
-	dw Blocks_001_4723
-	dw Metatiles_001_480d
-	dw AttrMap_001_4955
-	dw Palettes_001_49a6
+	dw PowerPlant2F_Layout
+	dw PowerPlant2F_Blocks
+	dw PowerPlant_Metatiles
+	dw PowerPlant_AttrMap
+	dw PowerPlant_Palettes
 	dw 0
 	dw Tileset_006_40d2
 	dw 0
-	dw Collision_001_49ee
+	dw PowerPlant_Collision
 
-unk_001_426c:
+PowerPlant3F_MapAttributes:
 	db 6, 5
-	dw Layout_001_477b
-	dw Blocks_001_479a
-	dw Metatiles_001_480d
-	dw AttrMap_001_4955
-	dw Palettes_001_49a6
+	dw PowerPlant3F_Layout
+	dw PowerPlant3F_Blocks
+	dw PowerPlant_Metatiles
+	dw PowerPlant_AttrMap
+	dw PowerPlant_Palettes
 	dw 0
 	dw Tileset_006_40d2
 	dw 0
-	dw Collision_001_49ee
+	dw PowerPlant_Collision
 
-unk_001_4280:
+PowerPlant4F_MapAttributes:
 	db 6, 5
-	dw Layout_001_47ee
-	dw Blocks_001_48e9
-	dw Metatiles_001_480d
-	dw AttrMap_001_4955
-	dw Palettes_001_49a6
+	dw PowerPlant4F_Layout
+	dw PowerPlant4F_Blocks
+	dw PowerPlant_Metatiles
+	dw PowerPlant_AttrMap
+	dw PowerPlant_Palettes
 	dw 0
 	dw Tileset_006_40d2
 	dw 0
-	dw Collision_001_49ee
+	dw PowerPlant_Collision
 
 Hideout_MapAttributes:
 	db 18, 12
@@ -329,40 +329,44 @@ Hideout_Palettes:
 Hideout_Collision:
 	dr $4652, $4681
 
-Layout_001_4681:
-	dr $4681, $46a0
+PowerPlant1F_Layout:
+	db 6
+INCBIN "data/maps/layouts/PowerPlant1F.bin"
 
-Blocks_001_46a0:
-	dr $46a0, $4704
+PowerPlant1F_Blocks:
+INCBIN "data/maps/blocks/PowerPlant1F.bin"
 
-Layout_001_4704:
-	dr $4704, $4723
+PowerPlant2F_Layout:
+	db 7
+INCBIN "data/maps/layouts/PowerPlant2F.bin"
 
-Blocks_001_4723:
-	dr $4723, $477b
+PowerPlant2F_Blocks:
+INCBIN "data/maps/blocks/PowerPlant2F.bin"
 
-Layout_001_477b:
-	dr $477b, $479a
+PowerPlant3F_Layout:
+	db 8
+INCBIN "data/maps/layouts/PowerPlant3F.bin"
 
-Blocks_001_479a:
-	dr $479a, $47ee
+PowerPlant3F_Blocks:
+INCBIN "data/maps/blocks/PowerPlant3F.bin"
 
-Layout_001_47ee:
-	dr $47ee, $480d
+PowerPlant4F_Layout:
+	db 9
+INCBIN "data/maps/layouts/PowerPlant4F.bin"
 
-Metatiles_001_480d:
-	dr $480d, $48e9
+PowerPlant_Metatiles:
+INCBIN "data/maps/metatiles/PowerPlant.bin"
 
-Blocks_001_48e9:
-	dr $48e9, $4955
+PowerPlant4F_Blocks:
+INCBIN "data/maps/blocks/PowerPlant4F.bin"
 
-AttrMap_001_4955:
+PowerPlant_AttrMap:
 	dr $4955, $49a6
 
-Palettes_001_49a6:
+PowerPlant_Palettes:
 	dr $49a6, $49ee
 
-Collision_001_49ee:
+PowerPlant_Collision:
 	dr $49ee, $4a26
 
 PowerPlantOutside_Layout:
