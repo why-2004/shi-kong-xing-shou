@@ -120,11 +120,11 @@ Group00_Maps::
 BellSchoolNorthClassroom1_Header::
 	; map XXXXX
 	dbaw2 BellSchoolNorthClassroom_MapAttributes
-	; warp 1, 0, $4078, unk_008_4414, unk_007_42fa
+	; warp 1, 0, $4078, BellSchoolNorthClassroom1_ObjectEvents, BellSchoolNorthClassroom1_MapEvents
 	db 1, 0
 	dw $4078
-	dbaw2 unk_008_4414
-	dw unk_007_42fa
+	dbaw2 BellSchoolNorthClassroom1_ObjectEvents
+	dw BellSchoolNorthClassroom1_MapEvents
 	; warp 0, 1, $5078, BellObservatory1_ObjectEvents, unk_007_4307
 	db 0, 1
 	dw $5078
@@ -213,7 +213,7 @@ BellSchoolSouthClassroom1_MapEvents::
 	warp_event 10, ABSOLUTE, $09, $01, $00 ; TEMP
 	events_end
 
-unk_007_42fa::
+BellSchoolNorthClassroom1_MapEvents::
 	event 10, ABSOLUTE, $01, $00, $b5, $41
 	event 7, 6, $01, $03, $c8, $41
 	events_end
