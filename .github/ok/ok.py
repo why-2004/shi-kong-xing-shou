@@ -11,24 +11,33 @@ def check_md5(file_, compare):
 	with open(file_, 'rb') as f:
 		return md5(f.read()).hexdigest() == compare.lower()
 
-def check_dr(dir_, rom_size):
+def check_dr(dir_, rom_size, per_file=False):
 	'''
 	Returns how many bytes are decoded
 	'''
 	undecoded_bytes = 0
+	flist = {}
 	for i in os.walk(dir_):
 		dir_ = i[0]
 		files = [f for f in i[2] if f.endswith('.asm')]
 		if files:
 			for file_ in files:
 				with open(os.path.join(dir_, file_), 'r', encoding="ISO-8859-1") as fn:
+					if os.path.join(dir_, file_) not in files:
+						flist[os.path.join(dir_, file_)] = 0
 					for line in fn:
 						dr_match = re.search(r'dr\s+(\$[0-9a-fA-F]+),\s+(\$[0-9a-fA-F]+)', line)
 						if dr_match:
 							start = int(dr_match.group(1)[1:], 16)
 							end = int(dr_match.group(2)[1:], 16)
-							undecoded_bytes += (end - start)
-	return (rom_size - undecoded_bytes)
+							if per_file:
+								flist[os.path.join(dir_, file_)] += (end - start)
+							else:
+								undecoded_bytes += (end - start)
+	if per_file:
+		return flist
+	else:
+		return (rom_size - undecoded_bytes)
 
 def check_syms(symfile):
 	'''
@@ -50,7 +59,7 @@ def check_syms(symfile):
 				if found_part:
 					partdoc += 1
 	return (totals, undoc, partdoc)
-							
+
 if __name__ == '__main__':
 	exit_state = 0
 	

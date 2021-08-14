@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from PIL import Image
+from PIL import Image, ImageDraw
 import ok
 import subprocess
 import os
@@ -9,8 +9,10 @@ import sys
 import requests
 import json
 
-# Generate image
+# --- Generate base image ---
 base = os.path.dirname(__file__)
+
+scale_factor = 2
 
 commit_hash = subprocess.Popen(["git", "rev-parse", "--short", "HEAD"], stdout=subprocess.PIPE).communicate()[0].decode('ascii').strip()
 
@@ -39,6 +41,13 @@ Disassembled:
   {bytes}/{rom_size} ({(bytes/rom_size) * 100:.2f}%)
 
 
+Progress:
+
+
+
+
+
+
 Symbols (ROM and RAM):
 
      Total: {totals}
@@ -50,8 +59,8 @@ Symbols (ROM and RAM):
      Undoc: {undoc} ({undoc/totals*100:.2f}%)
 '''
 
-x_tiles = 32
-y_tiles = 23
+x_tiles = 28
+y_tiles = 30
 
 fontimg = Image.open(os.path.join(base, 'font.png'))
 boximg = Image.open(os.path.join(base, 'textbox.png'))
@@ -97,7 +106,6 @@ for yy in range(y_tiles):
 					border_tiles['hh'],
 					(xx*8, yy*8)
 				)
-	
 	elif yy == y_tiles-2:
 		for xx in range(x_tiles):
 			if xx == 0:
@@ -120,7 +128,6 @@ for yy in range(y_tiles):
 					border_tiles['space'],
 					(xx*8, yy*8)
 				)
-	
 	elif yy == y_tiles-1:
 		for xx in range(x_tiles):
 			if xx == 0:
@@ -143,7 +150,6 @@ for yy in range(y_tiles):
 					border_tiles['hh'],
 					(xx*8, yy*8)
 				)
-	
 	else:
 		for xx in range(x_tiles):
 			if xx == 0:
@@ -161,7 +167,6 @@ for yy in range(y_tiles):
 					border_tiles['space'],
 					(xx*8, yy*8)
 				)
-
 # draw text
 x_base = 1
 y_base = 1
@@ -173,27 +178,69 @@ for line in string.split('\n'):
 		x_ += 1
 	y_ += 1
 
-test = test.resize((x_tiles*8*2, y_tiles*8*2), 0)
+test = test.resize((x_tiles*8*scale_factor, y_tiles*8*scale_factor), 0)
+
+
+# --- generate progress bar image ---
+import re
+
+# enum banks
+bank_file = ok.check_dr('banks/', 0, True)
+bank_list = {}
+for key, val in bank_file.items():
+	bank_num = re.search('banks/bank_([0-9a-f]{2})',key)
+	if bank_num:
+		bank_list[int(bank_num.group(1), 16)] = val
+
+# assume the bank is filled if not on this list
+for bank in range(0x80):
+	if (bank) not in bank_list:
+		bank_list[bank] = 0
+
+width_per_bank = 3
+height = 64
+
+progress_overlay = Image.new('RGB', (0x80*width_per_bank, height), (255, 255, 255))
+draw = ImageDraw.Draw(progress_overlay)
+for k, v in sorted(bank_list.items()):
+	if int(k) % 2:
+		fill=(128,128,128)
+	else:
+		fill=(0,0,0)
+	
+	draw.rectangle(
+		(
+			(width_per_bank*(k), 0),
+			(width_per_bank*(k+1)-1, ((0x4000-v)/0x4000)*height)
+		), fill=fill
+	)
+
+progress_overlay_pos_x = 2
+progress_overlay_pos_y = 14
+
+test.paste(progress_overlay, (progress_overlay_pos_x*8*scale_factor, progress_overlay_pos_y*8*scale_factor))
+
 test.save(os.path.join(base, 'IMAGE.png'))
 
 # Send off webhook
-url = sys.argv[1]
+if len(sys.argv) > 1:
+	url = sys.argv[1]
 
-embed_json = {
-	"username": "巴克 (Buck)",
-	"avatar_url": "https://cdn.discordapp.com/attachments/874592023204737044/875625368982269972/buckbox.png",
-	"embeds": [
-		{
-			"title": "Build results",
-			"description": "Commit #%s" % commit_hash,
-			"image":{"url": "attachment://IMAGE.png"}
-		}
-	]
-}
+	embed_json = {
+		"username": "巴克 (Buck)",
+		"avatar_url": "https://cdn.discordapp.com/attachments/874592023204737044/875625368982269972/buckbox.png",
+		"embeds": [
+			{
+				"title": "Build results",
+				"description": "Commit #%s" % commit_hash,
+				"image":{"url": "attachment://IMAGE.png"}
+			}
+		]
+	}
 
-embed_files = {
-	"payload_json": (None, json.dumps(embed_json), 'application/json'),
-	"file1": open(os.path.join(base, 'IMAGE.png'), "rb")
-}
+	embed_files = {
+		"payload_json": (None, json.dumps(embed_json), 'application/json'),
+		"file1": open(os.path.join(base, 'IMAGE.png'), "rb")
+	}
 
-requests.post(url, files=embed_files)
+	requests.post(url, files=embed_files)
