@@ -858,7 +858,7 @@ unk_00e_4899:
 	scr_01 $04, $00 ; TEMP
 	scr_01 $05, $00 ; TEMP
 	scr_1a $05, $04, $00, $f0 ; TEMP
-	scr_4e $04, $7eca
+	scr_4e $04, unk_0e_7eca
 	scr_1b $04 ; TEMP
 	scr_01 $04, $01 ; TEMP
 	scr_01 $05, $03 ; TEMP
@@ -1113,7 +1113,10 @@ text_0e_5bf5:
 INCLUDE "data/text/bank0e_misc2.asm"
 
 unk_0e_7e69:
-	dr $3be69, $3bf30
+	dr $3be69, $3beca
+
+unk_0e_7eca:
+	dr $3beca, $3bf30
 
 
 SECTION "banknume", ROMX[$7fff], BANK[$e]
