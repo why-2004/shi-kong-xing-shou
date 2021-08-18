@@ -55,6 +55,9 @@ def print_text():
             print("\";\n\tchoice;", end="")
             done = 1
             break
+        elif byte == 0xe7:
+            print("\";\n\tunknownE7;", end="")
+            break
         elif byte == 0xec:
             print("\";\n\tpara \"", end="")
         elif byte == 0xed:
@@ -62,7 +65,10 @@ def print_text():
         elif byte == 0xee:
             print("\";\n\tcont \"", end="")
         else:
-            char = chars[backup_charset][byte]
+            try:
+                char = chars[backup_charset][byte]
+            except KeyError:
+                char = 'UNKNOWN'
             print(char, end="")
         
     return done
@@ -88,8 +94,9 @@ while count != 0:
     # get nybbles from byte
     byte_high, charset = divmod(byte, 0x10)
     backup_charset = charset
-    if byte == 0xe0:
+    if (byte == 0xe0) or (byte == 0xe1):
         print("@org $%02x, $%04x:" % (bank, address))
+    if byte == 0xe0:
         arg1 = int.from_bytes(file.read(1), "little")
         arg2 = int.from_bytes(file.read(1), "little")
         print("\tinit $%02x, $%02x; # TEMP" % (arg1, arg2))

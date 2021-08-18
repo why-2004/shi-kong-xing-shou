@@ -28,6 +28,10 @@ def reportINCROMs(incromDir):
 		if '/.git/' in line:
 			continue
 
+		# ignore anything in git
+		if '/.github/' in line:
+			continue
+
 		# ignore binary files in case swp's exist
 		if 'binary file' in line:
 			continue

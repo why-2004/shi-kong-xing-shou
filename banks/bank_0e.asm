@@ -898,7 +898,7 @@ Script_00e_48ff:
 	scr_04 text_0e_61f6
 	scr_end
 
-unk_00e_4903:
+CrystalVillage_ObjectEvents:
 	object_event $1e, 13, 16, 0, $00, $00, $0b, $01, Script_00e_495c
 	object_event $12, 19,  8, 0, $00, $00, $06, $00, Script_00e_4960
 	object_event $14, 16, 11, 0, $00, $00, $05, $02, Script_00e_496e
