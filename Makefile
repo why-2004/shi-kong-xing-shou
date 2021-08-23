@@ -11,7 +11,7 @@ ifeq ($(ALLSYM),1)
 ASMFLAGS += -E
 endif
 
-SCANINC := tools/scan_includes
+SCANINC := tools/scan_includes.exe
 
 SOURCES := \
 	home.asm \
@@ -31,7 +31,7 @@ ROM_TITLE := "TIMER MONSTER  "
 .PRECIOUS:
 .SECONDARY:
 
-all: $(ROM)
+all: compare
 
 tools:
 	@$(MAKE) -C tools/
@@ -41,14 +41,24 @@ compare: $(ROM)
 
 clean:
 	$(RM) $(ROM) $(MAP) $(SYM) $(OBJS)
-	$(RM) data/text/*.asm		# Text preprocessor generated files
+	$(RM) data/text/*.asm
+	$(RM) data/maps/{blocks,layouts,metatiles}/*.bin
+	$(if $(shell find -iname '*.1bpp'),\
+		$(RM) $(shell find -iname '*.1bpp') \
+	)
+	$(if $(shell find -iname '*.2bpp'),\
+		$(RM) $(shell find -iname '*.2bpp') \
+	)
+	$(if $(shell find -iname '*.gbcpal'),\
+		$(RM) $(shell find -iname '*.gbcpal') \
+	)
 	$(MAKE) clean -C tools/
 
 # The dep rules have to be explicit or else missing files won't be reported.
 # As a side effect, they're evaluated immediately instead of when the rule is invoked.
 # It doesn't look like $(shell) can be deferred so there might not be a better way.
 define DEP
-$1: $2 $$(shell tools/scan_includes $2)
+$1: $2 $$(shell $(SCANINC) $2)
 	$$(ASM) $$(ASMFLAGS) -o $$@ $$<
 endef
 
@@ -90,12 +100,12 @@ gfx/intro/sprites/%.2bpp: tools/gfx += --interleave --remove-whitespace --png=$<
 %.2bpp: %.png
 	$(GFX) -o $@ $<
 	$(if $(tools/gfx),\
-		tools/gfx $(tools/gfx) -o $@ $@)
+		tools/gfx.exe $(tools/gfx) -o $@ $@)
 
 %.1bpp: %.png
 	$(GFX) -d1 -o $@ $<
 	$(if $(tools/gfx),\
-		tools/gfx $(tools/gfx) -d1 -o $@ $@)
+		tools/gfx.exe $(tools/gfx) -d1 -o $@ $@)
 
 %.gbcpal: %.png
 	$(GFX) -p $@ $<

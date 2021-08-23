@@ -3,7 +3,7 @@ import math
 
 chars = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
 
-file = "../shi_kong_xing_shou.gbc"
+file = "baserom.gbc"
 
 for line in open("../charmap.asm"):
     # Get charset
