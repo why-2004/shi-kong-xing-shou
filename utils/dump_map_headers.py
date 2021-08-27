@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
+
 import re
 import sys
 from lib.gbtool import *
 
-if len(sys.argv) < 2:
-	print(f'{sys.argv[0]} address')
+if len(sys.argv) < 3:
+	print(f'{sys.argv[0]} address output_file')
 	print('\taddress can be in BB:AAAA form or as a hex number')
 	exit(0)
 
@@ -16,6 +17,9 @@ with open('shi_kong_xing_shou.sym', 'r') as sym:
 	symbol = read_symbols(string)
 	rom_sym = symbol['rom']
 	ram_sym = symbol['ram']
+
+# prepare file for output
+out = open(sys.argv[2], 'w')
 
 # get rom
 with open('baserom.gbc', 'rb') as rom:
@@ -48,11 +52,9 @@ with open('baserom.gbc', 'rb') as rom:
 			ma  = get_number(rom, 2)
 			
 			ma_location = get_symbol(rom_sym, addr2offset(mb, ma))
-			print(f'\t; map XXXXX')
-			print(f'\tdb BANK({ma_location})')
-			print(f'\tds 3 ; {mt1} {mt2} {mt3}')
-			print(f'\tdw {ma_location}')
-			print()
+			print(f'{get_symbol(rom_sym, int(cy, 16))}:', file=out)
+			print(f'\tdbaw2 {ma_location}', file=out)
+			#print()
 		
 		elif selection.lower() == 'w':
 			# is warp
@@ -68,15 +70,17 @@ with open('baserom.gbc', 'rb') as rom:
 			
 			obv = get_symbol(rom_sym, addr2offset(bank, objv))
 			mpv = get_symbol(rom_sym, addr2offset(bank_, mapv))
-			print(f'\t; warp {x}, {y}, ${hex(gb)[2:]}, {obv}, {mpv}')
-			print(f'\tdb {x}, {y}')
-			print(f'\tdw ${hex(gb)[2:]}')
-			print(f'\tdb BANK({obv})')
-			print(f'\tds 3 ; {u1} {u2} {u3}')
-			print(f'\tdw {obv}')
-			print(f'\tdw {mpv}')
-			print()
+			print(f'\t; warp {x}, {y}, ${hex(gb)[2:]}, {obv}, {mpv}', file=out)
+			print(f'\tdb {x}, {y}', file=out)
+			print(f'\tdw ${hex(gb)[2:]}', file=out)
+			print(f'\tdb BANK({obv})', file=out)
+			print(f'\tds 3 ; {u1} {u2} {u3}', file=out)
+			print(f'\tdw {obv}', file=out)
+			print(f'\tdw {mpv}', file=out)
+			print('', file=out)
 		
 		else:
 			pass
+
+out.close()
 	
