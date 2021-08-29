@@ -169,8 +169,10 @@ wcf00:: ds $100
 
 SECTION "WRAM1", WRAMX
 
-wd000:: ds $82
+wd000:: ds $80
 
+wd080:: ds 1
+wd081:: ds 1
 wd082:: ds 1
 wd083:: ds 1
 wd084:: ds 1
@@ -527,7 +529,13 @@ wdb1f:: ds 1
 wdb20:: ds $17e
 
 wdc9e:: ds 1
-wdc9f:: ds $11
+wdc9f:: ds 1
+
+	ds 13
+
+wdcad:: ds 1
+
+	ds 2
 
 wdcb0:: ds 1
 wdcb1:: ds 1

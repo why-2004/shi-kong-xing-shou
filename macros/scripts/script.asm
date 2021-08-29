@@ -103,7 +103,22 @@ scr_10: MACRO
 	db script_10
 ENDM
 
-	const_def $14
+	const script_11 ; $11
+scr_11: MACRO
+	db script_11
+	dw \1
+ENDM
+
+	const script_12 ; $12
+scr_12: MACRO
+	db script_12
+ENDM
+
+	const script_13 ; $13
+scr_13: MACRO
+	db script_13
+	dw \1, \2
+ENDM
 
 	const script_text ; $14
 scr_text: MACRO
@@ -118,7 +133,31 @@ scr_emote: MACRO
 	db \2 ; emote
 ENDM
 
-	const_def $1a
+	const script_16 ; $16
+scr_16: MACRO
+	db script_16
+	dw \1
+ENDM
+
+	const script_17 ; $17
+scr_17: MACRO
+	db script_17
+	db \1, \2, \3
+ENDM
+
+	const script_18 ; $18
+scr_18: MACRO
+	db script_18
+	db \1
+	dw \1
+	db \2, \3 ; XXX variable?
+ENDM
+
+	const script_19 ; $19
+scr_19: MACRO
+	db script_19
+	db \1, \2 ; XXX variable?
+ENDM
 
 	const script_1a ; $1a
 scr_1a: MACRO
@@ -138,12 +177,27 @@ scr_1c: MACRO
 	db \1
 ENDM
 
-	const_def $1f
+	const script_1d ; $1d
+scr_1d: MACRO
+	db script_1d
+	db \1
+ENDM
+
+	const script_1e ; $1e
+scr_1e: MACRO
+	db script_1e
+	db \1, \2
+ENDM
 
 	const script_1f ; $1f
 scr_1f: MACRO
 	db script_1f
 	db \1
+ENDM
+
+	const script_20 ; $20
+scr_20: MACRO
+	db script_20
 ENDM
 
 	const_def $2a
