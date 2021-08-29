@@ -502,9 +502,9 @@ Func_1c96::
 	call Func_0817
 	pop hl
 	call $421a
-	ld a, [wcbfe]
+	ld a, [wTextStart]
 	ld l, a
-	ld a, [wcbfe + 1]
+	ld a, [wTextStart + 1]
 	ld h, a
 	push hl
 	jp CheckCharacter
@@ -523,9 +523,9 @@ PrintTwoOptionMenu::
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	ld [wcbfe], a
+	ld [wTextStart], a
 	ld a, h
-	ld [wcbfe + 1], a
+	ld [wTextStart + 1], a
 	push hl
 	jp CheckCharacter
 
@@ -623,9 +623,9 @@ Func_1d41::
 	ld [wdcd3 + 1], a
 	ld hl, .unk_1d59
 	ld a, l
-	ld [wcbfe], a
+	ld [wTextStart], a
 	ld a, h
-	ld [wcbfe + 1], a
+	ld [wTextStart + 1], a
 	push hl
 	jp CheckCharacter
 
@@ -755,9 +755,9 @@ Func_1e07::
 Func_1e0a::
 	pop hl
 	call $6e4d
-	ld a, [wcbfe]
+	ld a, [wTextStart]
 	ld l, a
-	ld a, [wcbfe + 1]
+	ld a, [wTextStart + 1]
 	ld h, a
 	push hl
 	jp CheckCharacter
@@ -765,9 +765,9 @@ Func_1e0a::
 Func_1e1a::
 	pop hl
 	call $6de3
-	ld a, [wcbfe]
+	ld a, [wTextStart]
 	ld l, a
-	ld a, [wcbfe + 1]
+	ld a, [wTextStart + 1]
 	ld h, a
 	push hl
 	jp CheckCharacter

@@ -88,7 +88,7 @@ wcbfb:: ds 1
 wcbfc:: ds 1
 wcbfd:: ds 1
 
-wcbfe:: ds 2
+wTextStart:: ds 2
 
 ; eight 4-color palettes each
 wBGPals1:: ds 8 palettes

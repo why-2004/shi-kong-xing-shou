@@ -260,10 +260,10 @@ Script_03:
 Script_04:
 	call GetScriptByte
 	ld a, [wScriptByte]
-	ld [wcbfe], a
+	ld [wTextStart], a
 	call GetScriptByte
 	ld a, [wScriptByte]
-	ld [wcbfe + 1], a
+	ld [wTextStart + 1], a
 	ld a, 1
 	ldh [hFFBC], a
 	call AdjustTextboxYPosition
@@ -569,10 +569,10 @@ Script_13:
 Script_text:
 	call GetScriptByte
 	ld a, [wScriptByte]
-	ld [wcbfe], a
+	ld [wTextStart], a
 	call GetScriptByte
 	ld a, [wScriptByte]
-	ld [wcbfe + 1], a
+	ld [wTextStart + 1], a
 
 	call AdjustTextboxYPosition
 
