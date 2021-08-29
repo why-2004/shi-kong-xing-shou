@@ -1,11 +1,19 @@
 #!/usr/bin/env python3
 import math
+import sys
+import re
+from lib.gbtool import addr2offset, str2addr
 
 chars = {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
 
 file = "baserom.gbc"
 
-for line in open("../charmap.asm"):
+if len(sys.argv) < 3:
+	print(f'{sys.argv[0]} address count')
+	print('\taddress can be in BB:AAAA form or as a hex number')
+	exit(0)
+
+for line in open("charmap.asm"):
     # Get charset
     if line.startswith("NEWCHARMAP"):
         charset = int(line[18])
@@ -23,8 +31,16 @@ for line in open("../charmap.asm"):
             chars[charset][byte] = char
 
 file = open(file, "rb")
-file.seek(int(input("Enter address: "), 16))
-count = int(input("Enter count: "))
+
+s = sys.argv[1]
+s_= re.match('([0-9a-fA-F]+):([0-9a-fA-F]{4})$', s)
+if s_:
+	start = addr2offset(*str2addr(s))
+else:
+	start = int(s, 16)
+
+file.seek(start)
+count = int(sys.argv[2])
 
 def print_text():
     global backup_charset

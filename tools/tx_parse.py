@@ -146,7 +146,14 @@ for l in t:
 			print(f'\tgetchoice {b[1][1][1]}')
 		
 		elif comm == 'TX_DB':
-			print(f'\tgetchoice {b[1][1][1]}')
+			print(f'\tdb ', end='')
+			dbbin = []
+			for q in b[1:]:
+				if q[0] == 'HEXADECIMAL_NUMBER':
+					dbbin.append(q[1].group(1))
+				elif q[0] == 'DECIMAL_NUMBER':
+					dbbin.append(q[1].group(1))
+			print(', '.join(dbbin))
 		
 		elif comm == 'TX_SIGN':
 			print(f'\ttext_sign')

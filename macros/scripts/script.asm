@@ -208,6 +208,22 @@ scr_farjump: MACRO
 	dba \1
 ENDM
 
+	const_def $2e
+
+	const script_2e ; $2e
+scr_2e: MACRO
+	db script_2e
+	db \1, \2, \3
+ENDM
+
+	const_def $30
+
+	const script_30 ; $30
+scr_30: MACRO
+	db script_30
+	db \1, \2 ; pointer?
+ENDM
+
 	const_def $34
 
 	const script_34 ; $34
@@ -305,6 +321,7 @@ ENDM
 scr_63: MACRO
 	db script_63
 	db \1
+	dw \2
 ENDM
 
 	const_def $65

@@ -1,80 +1,279 @@
 Script_012_4000:
-	dr $48000, $4801b
+	scr_face $03 ; TEMP
+	scr_63 $02, unk_012_400a
+	scr_text text_12_6443
+	scr_end
 
-Script_012_401b::
-	dr $4801b, $48025
+unk_012_400a:
+	db $67 ; TEMP
+	scr_delay $03, $10 ; TEMP
+	db $49 ; TEMP
+	scr_30 $6a, $69 ; TEMP
+	scr_delay $01, $03 ; TEMP
+	scr_2e $16, $00, $4a ; TEMP
+	db $67 ; TEMP
+	scr_end
 
-Script_012_4025::
-	dr $48025, $4802f
+Script_012_401b:
+	scr_face $01 ; TEMP
+	scr_63 $02, unk_012_400a
+	scr_text text_12_6443
+	scr_end
 
-Script_012_402f::
-	dr $4802f, $48039
+Script_012_4025:
+	scr_face $00 ; TEMP
+	scr_63 $02, unk_012_400a
+	scr_text text_12_6443
+	scr_end
 
-Script_012_4039::
-	dr $48039, $48054
+Script_012_402f:
+	scr_face $02 ; TEMP
+	scr_63 $02, unk_012_400a
+	scr_text text_12_6443
+	scr_end
 
-Script_012_4054::
-	dr $48054, $4805e
+Script_012_4039:
+	scr_face $03 ; TEMP
+	scr_63 $02, Script_012_4043
+	scr_text text_12_6443
+	scr_end
 
-Script_012_405e::
-	dr $4805e, $48068
+Script_012_4043:
+	db $67 ; TEMP
+	scr_delay $03, $10 ; TEMP
+	db $49 ; TEMP
+	scr_30 $74, $69 ; TEMP
+	scr_delay $01, $03 ; TEMP
+	scr_2e $92, $00, $7a ; TEMP
+	db $67 ; TEMP
+	scr_end
 
-Script_012_4068::
-	dr $48068, $48083
+Script_012_4054:
+	scr_face $01 ; TEMP
+	scr_63 $02, Script_012_4043
+	scr_text text_12_6443
+	scr_end
 
-Script_012_4083::
-	dr $48083, $4808d
+Script_012_405e:
+	scr_face $02 ; TEMP
+	scr_63 $02, Script_012_4043
+	scr_text text_12_6443
+	scr_end
 
-Script_012_408d::
-	dr $4808d, $480a8
+Script_012_4068:
+	scr_face $00 ; TEMP
+	scr_63 $02, unk_012_4072
+	scr_text text_12_6443
+	scr_end
 
-Script_012_40a8::
-	dr $480a8, $480b2
+unk_012_4072:
+	db $67 ; TEMP
+	scr_delay $03, $10 ; TEMP
+	db $49 ; TEMP
+	scr_30 $74, $69 ; TEMP
+	scr_delay $01, $03 ; TEMP
+	scr_2e $25, $00, $7b ; TEMP
+	db $67 ; TEMP
+	scr_end
 
-Script_012_40b2::
-	dr $480b2, $480bc
+Script_012_4083:
+	scr_face $01 ; TEMP
+	scr_63 $02, unk_012_4072
+	scr_text text_12_6443
+	scr_end
 
-Script_012_40bc::
-	dr $480bc, $480d7
+Script_012_408d:
+	scr_face $03 ; TEMP
+	scr_63 $02, unk_012_4097
+	scr_text text_12_6443
+	scr_end
 
-Script_012_40d7::
-	dr $480d7, $480e1
+unk_012_4097:
+	db $67 ; TEMP
+	scr_delay $03, $10 ; TEMP
+	db $49 ; TEMP
+	scr_30 $74, $69 ; TEMP
+	scr_delay $01, $03 ; TEMP
+	scr_2e $1b, $00, $7c ; TEMP
+	db $67 ; TEMP
+	scr_end
 
-Script_012_40e1::
-	dr $480e1, $480fc
+Script_012_40a8:
+	scr_face $00 ; TEMP
+	scr_63 $02, unk_012_4097
+	scr_text text_12_6443
+	scr_end
 
-Script_012_40fc::
-	dr $480fc, $48106
+Script_012_40b2:
+	scr_face $02 ; TEMP
+	scr_63 $02, unk_012_4097
+	scr_text text_12_6443
+	scr_end
 
-Script_012_4106::
-	dr $48106, $48121
+Script_012_40bc:
+	scr_face $01 ; TEMP
+	scr_63 $02, unk_012_40c6
+	scr_text text_12_6443
+	scr_end
 
-Script_012_4121::
-	dr $48121, $4812b
+unk_012_40c6:
+	db $67 ; TEMP
+	scr_delay $03, $10 ; TEMP
+	db $49 ; TEMP
+	scr_30 $74, $69 ; TEMP
+	scr_delay $01, $03 ; TEMP
+	scr_2e $8e, $00, $6f ; TEMP
+	db $67 ; TEMP
+	scr_end
 
-Script_012_412b::
-	dr $4812b, $48146
+Script_012_40d7:
+	scr_face $00 ; TEMP
+	scr_63 $02, unk_012_40c6
+	scr_text text_12_6443
+	scr_end
 
-Script_012_4146::
-	dr $48146, $48150
+Script_012_40e1:
+	scr_face $01 ; TEMP
+	scr_63 $02, unk_012_40eb
+	scr_text text_12_6443
+	scr_end
 
-Script_012_4150::
-	dr $48150, $4816b
+unk_012_40eb:
+	db $67 ; TEMP
+	scr_delay $03, $10 ; TEMP
+	db $49 ; TEMP
+	scr_30 $74, $69 ; TEMP
+	scr_delay $01, $03 ; TEMP
+	scr_2e $55, $00, $70 ; TEMP
+	db $67 ; TEMP
+	scr_end
 
-Script_012_416b::
-	dr $4816b, $48175
+Script_012_40fc:
+	scr_face $00 ; TEMP
+	scr_63 $02, unk_012_40eb
+	scr_text text_12_6443
+	scr_end
 
-Script_012_4175::
-	dr $48175, $4817f
+Script_012_4106:
+	scr_face $01 ; TEMP
+	scr_63 $02, unk_012_4110
+	scr_text text_12_6443
+	scr_end
 
-Script_012_417f::
-	dr $4817f, $4818e
+unk_012_4110:
+	db $67 ; TEMP
+	scr_delay $03, $10 ; TEMP
+	db $49 ; TEMP
+	scr_30 $74, $69 ; TEMP
+	scr_delay $01, $03 ; TEMP
+	scr_2e $2e, $00, $71 ; TEMP
+	db $67 ; TEMP
+	scr_end
 
-Script_012_418e::
-	dr $4818e, $481b5
+Script_012_4121:
+	scr_face $00 ; TEMP
+	scr_63 $02, unk_012_4110
+	scr_text text_12_6443
+	scr_end
 
-Script_012_41b5::
-	dr $481b5, $481dc
+Script_012_412b:
+	scr_face $01 ; TEMP
+	scr_63 $02, unk_012_4135
+	scr_text text_12_6443
+	scr_end
+
+unk_012_4135:
+	db $67 ; TEMP
+	scr_delay $03, $10 ; TEMP
+	db $49 ; TEMP
+	scr_30 $74, $69 ; TEMP
+	scr_delay $01, $03 ; TEMP
+	scr_2e $27, $00, $72 ; TEMP
+	db $67 ; TEMP
+	scr_end
+
+Script_012_4146:
+	scr_face $00 ; TEMP
+	scr_63 $02, unk_012_4135
+	scr_text text_12_6443
+	scr_end
+
+Script_012_4150:
+	scr_face $03 ; TEMP
+	scr_63 $02, unk_012_415a
+	scr_text text_12_6443
+	scr_end
+
+unk_012_415a:
+	db $67 ; TEMP
+	scr_delay $03, $10 ; TEMP
+	db $49 ; TEMP
+	scr_30 $74, $69 ; TEMP
+	scr_delay $01, $03 ; TEMP
+	scr_2e $1b, $00, $2f ; TEMP
+	db $67 ; TEMP
+	scr_end
+
+Script_012_416b:
+	scr_face $02 ; TEMP
+	scr_63 $02, unk_012_415a
+	scr_text text_12_6443
+	scr_end
+
+Script_012_4175:
+	scr_face $01 ; TEMP
+	scr_63 $02, unk_012_415a
+	scr_text text_12_6443
+	scr_end
+
+Script_012_417f:
+	scr_face $00 ; TEMP
+	scr_63 $02, unk_012_415a
+	scr_text text_12_6443
+	scr_end
+
+unk_012_4189:
+	db $53 ; TEMP
+	scr_01 $00, $02 ; TEMP
+	scr_end
+
+Script_012_418e:
+	scr_63 $01, unk_012_4193
+	scr_end
+
+unk_012_4193:
+	scr_face $02 ; TEMP
+	scr_01 $01, $02 ; TEMP
+	scr_1a $01, $00, $f0, $00 ; TEMP
+	db $76 ; TEMP
+	db $41 ; TEMP
+	scr_4e $00, unk_012_4d76
+	scr_1b $01 ; TEMP
+	scr_01 $01, $03 ; TEMP
+	scr_06 $01, $04 ; TEMP
+	scr_01 $01, $00 ; TEMP
+	scr_06 $01, $01 ; TEMP
+	scr_01 $01, $02 ; TEMP
+	scr_end
+
+Script_012_41b5:
+	scr_63 $01, unk_012_41ba
+	scr_end
+
+unk_012_41ba:
+	scr_face $03 ; TEMP
+	scr_01 $01, $03 ; TEMP
+	scr_1a $01, $00, $f0, $00 ; TEMP
+	db $76 ; TEMP
+	db $41 ; TEMP
+	scr_4e $00, unk_012_4db7
+	scr_1b $01 ; TEMP
+	scr_01 $01, $02 ; TEMP
+	scr_06 $01, $03 ; TEMP
+	scr_01 $01, $00 ; TEMP
+	scr_06 $01, $01 ; TEMP
+	scr_01 $01, $03 ; TEMP
+	scr_end
 
 ObjectEvents_012_41dc::
 	dr $481dc, $481fe
@@ -203,7 +402,18 @@ ObjectEvents_012_4d2c::
 	dr $48d2c, $48d71
 
 Script_012_4d71::
-	dr $48d71, $4bf20
+	dr $48d71, $48d76
+
+unk_012_4d76::
+	dr $48d76, $48db7
+
+unk_012_4db7::
+	dr $48db7, $49194
+
+INCLUDE "data/text/bank12_misc.asm"
+
+text_12_7eac:
+	dr $4beac, $4bf1c
 
 SECTION "banknum12", ROMX[$7fff], BANK[$12]
 	db $12

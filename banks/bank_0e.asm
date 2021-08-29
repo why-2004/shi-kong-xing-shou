@@ -1005,11 +1005,10 @@ unk_00e_49ef:
 Script_00e_49fb:
 	scr_checkbit wdaa1, $03, unk_00e_4a16
 	scr_04 text_0e_65b8
-	scr_63 $01 ; TEMP
+	scr_63 $01, unk_00e_4a09
 	scr_end
 
-unk_00e_4a07:
-	scr_4a $09 ; TEMP
+unk_00e_4a09:
 	scr_emote $00, $00 ; TEMP
 	scr_delay $03, $20 ; TEMP
 	scr_text text_0e_65de

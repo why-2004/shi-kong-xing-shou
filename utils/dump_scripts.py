@@ -147,6 +147,17 @@ with open('baserom.gbc', 'rb') as rom:
 				new_addr = int.from_bytes(rom.read(2), "little")
 				print("\tscr_farjump %s" % get_symbol(rom_sym, addr2offset(new_bank, new_addr)))
 
+			elif byte == 0x2e:
+				arg = int.from_bytes(rom.read(1), "little")
+				arg2 = int.from_bytes(rom.read(1), "little")
+				arg3 = int.from_bytes(rom.read(1), "little")
+				print("\tscr_2e $%02x, $%02x, $%02x ; TEMP" % (arg,arg2,arg3))
+
+			elif byte == 0x30:
+				arg = int.from_bytes(rom.read(1), "little")
+				arg2 = int.from_bytes(rom.read(1), "little")
+				print("\tscr_30 $%02x, $%02x ; TEMP" % (arg,arg2))
+
 			elif byte == 0x34:
 				arg1 = int.from_bytes(rom.read(1), "little")
 				arg2 = int.from_bytes(rom.read(1), "little")
@@ -204,7 +215,9 @@ with open('baserom.gbc', 'rb') as rom:
 			
 			elif byte == 0x63:
 				arg = int.from_bytes(rom.read(1), "little")
-				print("\tscr_63 $%02x ; TEMP" % arg)
+				arg2 = int.from_bytes(rom.read(2), "little")
+				sym = get_symbol(rom_sym, addr2offset(bank, arg2))
+				print("\tscr_63 $%02x, %s" % (arg, sym))
 			
 			elif byte == 0x65:
 				arg = int.from_bytes(rom.read(1), "little")

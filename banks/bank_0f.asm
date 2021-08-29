@@ -559,9 +559,7 @@ Script_00f_45bd:
 	scr_end
 
 unk_00f_45c7:
-	scr_63 $01 ; TEMP
-	db $cf ; TEMP
-	db $45 ; TEMP
+	scr_63 $01, unk_00f_45cf
 	scr_text text_0f_5595
 	scr_end
 
