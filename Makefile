@@ -11,7 +11,7 @@ ifeq ($(ALLSYM),1)
 ASMFLAGS += -E
 endif
 
-SCANINC := tools/scan_includes.exe
+SCANINC := tools/scan_includes
 
 SOURCES := \
 	home.asm \
@@ -100,12 +100,12 @@ gfx/intro/sprites/%.2bpp: tools/gfx += --interleave --remove-whitespace --png=$<
 %.2bpp: %.png
 	$(GFX) -o $@ $<
 	$(if $(tools/gfx),\
-		tools/gfx.exe $(tools/gfx) -o $@ $@)
+		tools/gfx $(tools/gfx) -o $@ $@)
 
 %.1bpp: %.png
 	$(GFX) -d1 -o $@ $<
 	$(if $(tools/gfx),\
-		tools/gfx.exe $(tools/gfx) -d1 -o $@ $@)
+		tools/gfx $(tools/gfx) -d1 -o $@ $@)
 
 %.gbcpal: %.png
 	$(GFX) -p $@ $<

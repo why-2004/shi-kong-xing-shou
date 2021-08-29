@@ -4,8 +4,8 @@ CC := gcc
 CFLAGS := -O3 -std=c99 -Wall -Wextra -Wno-missing-field-initializers
 
 tools := \
-	scan_includes.exe \
-	gfx.exe
+	scan_includes \
+	gfx
 
 all: $(tools)
 	@:
@@ -15,5 +15,5 @@ clean:
 
 gfx: common.h
 
-%.exe: %.c
+%: %.c
 	$(CC) $(CFLAGS) -o $@ $<
