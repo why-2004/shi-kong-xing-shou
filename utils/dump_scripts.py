@@ -100,15 +100,21 @@ with open('baserom.gbc', 'rb') as rom:
 				print("\tscr_setmap $%02x, $%02x ; TEMP" % (arg1, arg2))
 
 			elif byte == 0x0d:
+				# every movement assumed to be in bank $0b
 				arg = int.from_bytes(rom.read(2), "little")
-				print("\tscr_0d $%04x ; TEMP" % arg)
+				print("\tscr_movemap %s" %
+					get_symbol(rom_sym, addr2offset(0xb, arg))
+				)
 
 			elif byte == 0x0e:
 				print("\tscr_0e")
 
 			elif byte == 0x0f:
+				# every movement assumed to be in bank $0b
 				arg = int.from_bytes(rom.read(2), "little")
-				print("\tscr_move $%04x ; TEMP" % arg)
+				print("\tscr_move %s" %
+					get_symbol(rom_sym, addr2offset(0xb, arg))
+				)
 
 			elif byte == 0x10:
 				print("\tscr_10")

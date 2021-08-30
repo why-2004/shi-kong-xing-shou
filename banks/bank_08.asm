@@ -2,10 +2,10 @@ Script_008_4000::
 	scr_face FACE_UP
 	scr_text House_CutsceneText1
 	scr_face FACE_LEFT
-	scr_move unk_00b_413c
+	scr_move MovementData_OneLeft
 	scr_face FACE_UP
 	scr_face FACE_RIGHT
-	scr_move unk_00b_413e
+	scr_move MovementData_OneRight
 	scr_face FACE_UP
 	scr_text House_CutsceneText2
 	scr_emote 0, EMOTE_HEART
@@ -15,29 +15,29 @@ Script_008_4000::
 	scr_text text_08_458a
 	scr_text text_08_45a5
 	scr_face FACE_LEFT
-	scr_move unk_00b_413c
-	scr_move unk_00b_413c
+	scr_move MovementData_OneLeft
+	scr_move MovementData_OneLeft
 	scr_face FACE_DOWN
-	scr_move unk_00b_4191
+	scr_move MovementData_OneDown
 	scr_text text_08_45cc
 	scr_delay 3, 7
 	scr_emote 0, EMOTE_EXCLAMATION
 	scr_delay 3, 32
 	scr_face FACE_LEFT
-	scr_move unk_00b_413c
-	scr_move unk_00b_413c
-	scr_move unk_00b_413c
+	scr_move MovementData_OneLeft
+	scr_move MovementData_OneLeft
+	scr_move MovementData_OneLeft
 	scr_face FACE_DOWN
-	scr_move unk_00b_4191
+	scr_move MovementData_OneDown
 	scr_text text_08_45db
 	scr_delay 3, 7
 	scr_emote 0, EMOTE_QUESTION
 	scr_delay 3, 32
 	scr_text text_08_45f0
-	scr_move unk_00b_4191
-	scr_move unk_00b_4191
-	scr_move unk_00b_4191
-	scr_move unk_00b_4191
+	scr_move MovementData_OneDown
+	scr_move MovementData_OneDown
+	scr_move MovementData_OneDown
+	scr_move MovementData_OneDown
 	scr_5e $01 ; follower
 	scr_face FACE_LEFT
 	scr_setmap $01, $08 ; map switch
@@ -63,20 +63,20 @@ Script_008_408a:
 	scr_setmap $0a, $01
 	scr_face FACE_UP
 	scr_01 2, FACE_LEFT
-	scr_move unk_00b_4193
-	scr_move unk_00b_4193
+	scr_move MovementData_OneUp
+	scr_move MovementData_OneUp
 	scr_text text_08_4b8b
 	scr_delay 3, 7
-	scr_move unk_00b_4193
-	scr_move unk_00b_4193
+	scr_move MovementData_OneUp
+	scr_move MovementData_OneUp
 	scr_face FACE_LEFT
-	scr_move unk_00b_413c
+	scr_move MovementData_OneLeft
 	scr_text text_08_4b9f
 	scr_delay 3, 7
 	scr_emote 0, EMOTE_ANGER
 	scr_delay 3, 32
-	scr_move unk_00b_413c
-	scr_move unk_00b_413c
+	scr_move MovementData_OneLeft
+	scr_move MovementData_OneLeft
 	scr_text text_08_4baf
 	scr_emote 2, EMOTE_EXCLAMATION
 	scr_delay 3, 32
@@ -84,8 +84,8 @@ Script_008_408a:
 	scr_text text_08_4bbb
 	scr_text text_08_4bd2
 	scr_text text_08_4bdc
-	scr_move unk_00b_413c
-	scr_move unk_00b_413c
+	scr_move MovementData_OneLeft
+	scr_move MovementData_OneLeft
 	scr_face FACE_UP
 	scr_06 2, $00
 	scr_text text_08_4bf3
@@ -94,8 +94,8 @@ Script_008_408a:
 	scr_face FACE_LEFT
 ; Cutscene
 	scr_01 2, FACE_LEFT
-	scr_setmap $2c, $00
-	scr_0d $454f
+	scr_setmap MAP_BLUE_MOON_1, $00
+	scr_movemap MovementData_TwelveUp ; apply movement data to map
 	scr_text text_08_4c4c
 	scr_text text_08_4c8c
 	scr_text text_08_4cb5
@@ -133,7 +133,7 @@ Script_008_4137:
 ; No entry
 	scr_text text_08_4b77
 	scr_face FACE_DOWN
-	scr_move unk_00b_4191
+	scr_move MovementData_OneDown
 	scr_44
 	scr_06 1, $02
 	scr_01 1, FACE_DOWN ; snowy faces down
@@ -150,7 +150,7 @@ Script_008_4151:
 	scr_01 2, FACE_DOWN
 	scr_06 2, $01 ; TEMP
 	scr_06 2, $01 ; TEMP
-	scr_move unk_00b_4193
+	scr_move MovementData_OneUp
 	scr_emote 0, EMOTE_QUESTION
 	scr_delay 3, 32
 	scr_text text_08_4d1a
@@ -166,9 +166,9 @@ Script_008_4151:
 	scr_delay 3, 32
 	scr_text text_08_4d8f
 	scr_face FACE_DOWN
-	scr_move unk_00b_4191
-	scr_move unk_00b_4191
-	scr_move unk_00b_4191
+	scr_move MovementData_OneDown
+	scr_move MovementData_OneDown
+	scr_move MovementData_OneDown
 	scr_setbit wdaa0, 1
 	scr_1f $02 ; TEMP
 
@@ -193,7 +193,7 @@ Script_008_41b5:
 .script_41bf
 	scr_text text_08_522e
 	scr_face FACE_LEFT
-	scr_move unk_00b_413c
+	scr_move MovementData_OneLeft
 	scr_end
 
 Script_008_41c8:
@@ -244,8 +244,8 @@ Script_008_4214:
 	scr_06 3, $01 ; TEMP
 	scr_06 3, $01 ; TEMP
 	scr_1c $03
-	scr_move unk_00b_4193
-	scr_move unk_00b_4193
+	scr_move MovementData_OneUp
+	scr_move MovementData_OneUp
 	scr_emote 0, EMOTE_QUESTION
 	scr_delay 3, 32
 	scr_text text_08_5500
@@ -265,7 +265,7 @@ BallotsHouse1_ObjectEvents4:
 Script_008_4285:
 	scr_text text_08_55a7
 	scr_face FACE_UP
-	scr_move unk_00b_4193
+	scr_move MovementData_OneUp
 	scr_44
 	scr_06 1, $01
 	scr_01 1, FACE_UP
@@ -274,7 +274,7 @@ Script_008_4285:
 Script_008_4295:
 	scr_text text_08_4f82
 	scr_face FACE_UP
-	scr_move unk_00b_4193
+	scr_move MovementData_OneUp
 	scr_end
 
 BallotsHouse1_ObjectEvents:

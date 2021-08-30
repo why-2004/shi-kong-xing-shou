@@ -76,15 +76,17 @@ ENDM
 
 	const script_setmap ; $0c
 scr_setmap: MACRO
+; This warps to a map in the same group
+; as the map the script is in
 	db script_setmap
 	db \1 ; map
 	db \2 ; entrance?
 ENDM
 
-	const script_0d ; $0d
-scr_0d: MACRO
-	db script_0d
-	dw \1
+	const script_movemap ; $0d
+scr_movemap: MACRO
+	db script_movemap
+	dw \1 ; movement data (same as sprite)
 ENDM
 
 	const script_0e ; $0e

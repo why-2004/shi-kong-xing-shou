@@ -1,38 +1,56 @@
 unk_00b_4000:
 	dr $2c000, $2c13c
 
-unk_00b_413c::
+MovementData_OneLeft::
 	db LEFT, $ff
 
-unk_00b_413e::
+MovementData_OneRight::
 	db RIGHT, $ff
 
-unk_00b_4140::
+MovementData_00b_4140::
 	db RIGHT, RIGHT, $ff
 
-unk_00b_4143::
+MovementData_00b_4143::
 	db LEFT, DOWN, DOWN, RIGHT, $ff
 
-unk_00b_4148::
+MovementData_00b_4148::
 	db DOWN, RIGHT, $ff
 
-unk_00b_414b::
+MovementData_00b_414b::
 	db DOWN, LEFT, $ff
 
-unk_00b_414e::
+MovementData_00b_414e::
 	db LEFT, DOWN, $ff
 
-unk_00b_4151::
+MovementData_00b_4151::
 	db LEFT, UP, $ff
 
-unk_00b_4154::
+MovementData_00b_4154::
 	db DOWN, LEFT, UP, $ff
 
-unk_00b_4158::
+MovementData_00b_4158::
 	db RIGHT, DOWN, DOWN, LEFT, $ff
 
-unk_00b_415d:
-	dr $2c15d, $2c17b
+Pointers_00b_415d:
+	dw .unk_00b_416d
+	dw .unk_00b_4173
+	dw .unk_00b_416d
+	dw .unk_00b_4173
+	dw .unk_00b_416d
+	dw .unk_00b_4173
+	dw .unk_00b_416d
+	dw .unk_00b_4179
+
+.unk_00b_416d:
+	db $02, $02
+	db $27, $29, $28, $2a
+
+.unk_00b_4173:
+	db $02, $02
+	db $2b, $2d, $2c, $2e
+
+.unk_00b_4179:
+	db $ff, $ff
 
 Func_00b_417b::
 	call Func_00b_606f
@@ -51,10 +69,10 @@ Func_00b_417b::
 unk_00b_418e:
 	dr $2c18e, $2c191
 
-unk_00b_4191::
+MovementData_OneDown::
 	db DOWN, $ff
 
-unk_00b_4193::
+MovementData_OneUp::
 	db UP, $ff
 
 unk_00b_4195::
@@ -498,8 +516,14 @@ Script_0d:
 	ld [wScriptByte], a
 	ret
 
-unk_00b_454f:
-	dr $2c54f, $2c55f
+MovementData_TwelveUp:
+rept 12
+	db UP
+endr
+	db $ff
+
+MovementData_TwoDown:
+	db DOWN, DOWN, $ff
 
 Script_0e:
 	call DelayFrame
