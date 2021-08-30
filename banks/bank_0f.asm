@@ -15,7 +15,7 @@ unk_00f_4006:
 Script_00f_400a:
 	scr_checkbit wdaa2, $06, unk_00f_4016
 	db $66 ; TEMP
-	scr_01 $40, $0e ; TEMP
+	scr_spriteface $40, $0e ; TEMP
 	scr_end
 
 unk_00f_4015:
@@ -59,14 +59,14 @@ unk_00f_4069:
 
 unk_00f_406d:
 	scr_checkbit wdaa1, $05, unk_00f_4095
-	scr_01 $04, $03 ; TEMP
+	scr_spriteface $04, $03 ; TEMP
 	scr_emote $04, $00 ; TEMP
 	scr_delay $03, $20 ; TEMP
-	scr_01 $04, $02 ; TEMP
-	scr_01 $02, $03 ; TEMP
+	scr_spriteface $04, $02 ; TEMP
+	scr_spriteface $02, $03 ; TEMP
 	scr_text text_0f_5820
 	scr_text text_0f_5877
-	scr_01 $02, $00 ; TEMP
+	scr_spriteface $02, $00 ; TEMP
 	scr_text text_0f_5881
 	scr_emote $00, $01 ; TEMP
 	scr_delay $03, $20 ; TEMP
@@ -74,7 +74,7 @@ unk_00f_406d:
 
 unk_00f_4095:
 	scr_04 text_0f_58cc
-	scr_01 $02, $03 ; TEMP
+	scr_spriteface $02, $03 ; TEMP
 	scr_emote $02, $00 ; TEMP
 	scr_delay $03, $20 ; TEMP
 	scr_text text_0f_5936
@@ -110,22 +110,22 @@ unk_00f_40ef:
 	scr_text text_0f_4a5a
 	scr_face $02 ; TEMP
 	scr_setmap $1d, $02 ; TEMP
-	scr_01 $03, $02 ; TEMP
-	scr_01 $02, $03 ; TEMP
-	scr_06 $03, $03 ; TEMP
-	scr_06 $03, $03 ; TEMP
-	scr_01 $02, $00 ; TEMP
+	scr_spriteface $03, $02 ; TEMP
+	scr_spriteface $02, $03 ; TEMP
+	scr_spritewalk $03, $03 ; TEMP
+	scr_spritewalk $03, $03 ; TEMP
+	scr_spriteface $02, $00 ; TEMP
 	scr_emote $02, $00 ; TEMP
 	scr_delay $03, $20 ; TEMP
-	scr_01 $03, $03 ; TEMP
-	scr_06 $03, $03 ; TEMP
-	scr_01 $03, $01 ; TEMP
-	scr_06 $03, $02 ; TEMP
-	scr_01 $03, $03 ; TEMP
-	scr_01 $02, $02 ; TEMP
+	scr_spriteface $03, $03 ; TEMP
+	scr_spritewalk $03, $03 ; TEMP
+	scr_spriteface $03, $01 ; TEMP
+	scr_spritewalk $03, $02 ; TEMP
+	scr_spriteface $03, $03 ; TEMP
+	scr_spriteface $02, $02 ; TEMP
 	scr_emote $02, $02 ; TEMP
 	scr_delay $03, $20 ; TEMP
-	scr_01 $03, $02 ; TEMP
+	scr_spriteface $03, $02 ; TEMP
 	scr_1a $02, $03, $00, $10 ; TEMP
 	scr_4e $03, unk_00f_45d4
 	scr_1b $03 ; TEMP
@@ -182,7 +182,7 @@ unk_00f_41ff:
 	scr_delay $03, $20 ; TEMP
 	scr_text text_0f_4ac7
 	scr_text text_0f_4ad7
-	scr_01 $04, $02 ; TEMP
+	scr_spriteface $04, $02 ; TEMP
 	scr_4e $04, unk_00f_59b1
 	scr_1c $04 ; TEMP
 	scr_setbit $daa2, $05 ; TEMP
@@ -190,12 +190,12 @@ unk_00f_41ff:
 
 Script_00f_421c:
 	scr_checkbit wdaa2, $06, unk_00f_42af
-	scr_01 $03, $03 ; TEMP
-	scr_01 $04, $02 ; TEMP
+	scr_spriteface $03, $03 ; TEMP
+	scr_spriteface $04, $02 ; TEMP
 	scr_text text_0f_4b28
 	scr_text text_0f_4b4c
-	scr_01 $03, $00 ; TEMP
-	scr_01 $04, $00 ; TEMP
+	scr_spriteface $03, $00 ; TEMP
+	scr_spriteface $04, $00 ; TEMP
 	scr_emote $03, $00 ; TEMP
 	scr_emote $04, $00 ; TEMP
 	scr_delay $03, $20 ; TEMP
@@ -204,16 +204,16 @@ Script_00f_421c:
 	scr_3b $4b12 ; XXX text_0f_4ae3
 	scr_checkbit wdaa3, $03, unk_00f_42a3
 	scr_text text_0f_4bc3
-	scr_01 $03, $02 ; TEMP
-	scr_01 $04, $02 ; TEMP
+	scr_spriteface $03, $02 ; TEMP
+	scr_spriteface $04, $02 ; TEMP
 	scr_1a $04, $03, $00, $10 ; TEMP
 	scr_4e $03, unk_00f_594f
 	scr_1b $03 ; TEMP
 	scr_4e $03, unk_00f_5980
 	scr_1c $03 ; TEMP
-	scr_01 $04, $03 ; TEMP
+	scr_spriteface $04, $03 ; TEMP
 	scr_text text_0f_4bf0
-	scr_01 $04, $02 ; TEMP
+	scr_spriteface $04, $02 ; TEMP
 	scr_4e $04, unk_00f_5980
 	scr_1c $04 ; TEMP
 	scr_emote $00, $01 ; TEMP
@@ -238,7 +238,7 @@ unk_00f_42a3:
 	scr_face $00 ; TEMP
 	scr_move $4191 ; TEMP
 	scr_move $4191 ; TEMP
-	scr_01 $01, $00 ; TEMP
+	scr_spriteface $01, $00 ; TEMP
 	scr_end
 
 unk_00f_42af:
@@ -329,7 +329,7 @@ unk_00f_4381:
 
 Script_00f_4385:
 	scr_face $02 ; TEMP
-	scr_01 $02, $03 ; TEMP
+	scr_spriteface $02, $03 ; TEMP
 	scr_text text_0f_4ebe
 	scr_checkbit wdaa4, $01, unk_00f_4396
 	scr_35 $00 ; TEMP
@@ -418,40 +418,40 @@ unk_00f_4427:
 	scr_move $413e ; TEMP
 	scr_move $413e ; TEMP
 	scr_face $01 ; TEMP
-	scr_01 $02, $01 ; TEMP
-	scr_06 $02, $02 ; TEMP
-	scr_06 $02, $02 ; TEMP
+	scr_spriteface $02, $01 ; TEMP
+	scr_spritewalk $02, $02 ; TEMP
+	scr_spritewalk $02, $02 ; TEMP
 	scr_delay $03, $10 ; TEMP
-	scr_01 $02, $03 ; TEMP
-	scr_06 $02, $04 ; TEMP
-	scr_06 $02, $04 ; TEMP
-	scr_01 $02, $01 ; TEMP
+	scr_spriteface $02, $03 ; TEMP
+	scr_spritewalk $02, $04 ; TEMP
+	scr_spritewalk $02, $04 ; TEMP
+	scr_spriteface $02, $01 ; TEMP
 	scr_delay $03, $10 ; TEMP
-	scr_01 $02, $02 ; TEMP
-	scr_06 $02, $03 ; TEMP
-	scr_06 $02, $03 ; TEMP
-	scr_01 $02, $00 ; TEMP
-	scr_06 $02, $01 ; TEMP
-	scr_06 $02, $01 ; TEMP
+	scr_spriteface $02, $02 ; TEMP
+	scr_spritewalk $02, $03 ; TEMP
+	scr_spritewalk $02, $03 ; TEMP
+	scr_spriteface $02, $00 ; TEMP
+	scr_spritewalk $02, $01 ; TEMP
+	scr_spritewalk $02, $01 ; TEMP
 	scr_text text_0f_50ed
 	scr_emote $00, $03 ; TEMP
 	scr_delay $03, $20 ; TEMP
 	scr_text text_0f_51c1
 	db $52 ; TEMP
-	scr_01 $05, $02 ; TEMP
-	scr_06 $05, $03 ; TEMP
-	scr_06 $05, $03 ; TEMP
-	scr_01 $05, $00 ; TEMP
-	scr_06 $05, $01 ; TEMP
-	scr_01 $05, $03 ; TEMP
+	scr_spriteface $05, $02 ; TEMP
+	scr_spritewalk $05, $03 ; TEMP
+	scr_spritewalk $05, $03 ; TEMP
+	scr_spriteface $05, $00 ; TEMP
+	scr_spritewalk $05, $01 ; TEMP
+	scr_spriteface $05, $03 ; TEMP
 	scr_emote $05, $03 ; TEMP
 	scr_delay $03, $20 ; TEMP
 	scr_text text_0f_5200
-	scr_01 $05, $00 ; TEMP
-	scr_06 $05, $01 ; TEMP
-	scr_06 $05, $01 ; TEMP
-	scr_06 $05, $01 ; TEMP
-	scr_06 $05, $01 ; TEMP
+	scr_spriteface $05, $00 ; TEMP
+	scr_spritewalk $05, $01 ; TEMP
+	scr_spritewalk $05, $01 ; TEMP
+	scr_spritewalk $05, $01 ; TEMP
+	scr_spritewalk $05, $01 ; TEMP
 	scr_1c $05 ; TEMP
 	scr_setbit $daa3, $00 ; TEMP
 	scr_end
@@ -467,63 +467,63 @@ unk_00f_44db:
 
 Script_00f_44df:
 	scr_checkbit wdaa3, $01, unk_00f_458e
-	scr_01 $02, $00 ; TEMP
+	scr_spriteface $02, $00 ; TEMP
 	scr_text text_0f_52fb
 	scr_face $01 ; TEMP
 	scr_move $4193 ; TEMP
 	scr_44
-	scr_06 $01, $01 ; TEMP
-	scr_01 $01, $01 ; TEMP
+	scr_spritewalk $01, $01 ; TEMP
+	scr_spriteface $01, $01 ; TEMP
 	scr_face $03 ; TEMP
 	scr_move $413e ; TEMP
 	scr_face $01 ; TEMP
-	scr_01 $01, $03 ; TEMP
-	scr_06 $01, $04 ; TEMP
-	scr_01 $01, $01 ; TEMP
+	scr_spriteface $01, $03 ; TEMP
+	scr_spritewalk $01, $04 ; TEMP
+	scr_spriteface $01, $01 ; TEMP
 unk_00f_4507:
-	scr_06 $02, $01 ; TEMP
+	scr_spritewalk $02, $01 ; TEMP
 	scr_text text_0f_531f
 	scr_text text_0f_538f
 	scr_48 $02, $06
 	scr_text text_0f_539e
 	scr_48 $02, $07
 	scr_text text_0f_53ad
-	scr_01 $03, $00 ; TEMP
-	scr_01 $04, $00 ; TEMP
+	scr_spriteface $03, $00 ; TEMP
+	scr_spriteface $04, $00 ; TEMP
 	scr_1a $04, $03, $00, $f0 ; TEMP
 	scr_4e $03, unk_00f_5a12
 	scr_1b $03 ; TEMP
-	scr_01 $03, $03 ; TEMP
-	scr_01 $02, $02 ; TEMP
+	scr_spriteface $03, $03 ; TEMP
+	scr_spriteface $02, $02 ; TEMP
 	scr_text text_0f_53e1
 	scr_text text_0f_53f6
 	scr_text text_0f_5439
-	scr_01 $03, $00 ; TEMP
-	scr_01 $02, $01 ; TEMP
-	scr_06 $02, $02 ; TEMP
-	scr_01 $02, $02 ; TEMP
-	scr_06 $02, $03 ; TEMP
-	scr_06 $02, $03 ; TEMP
-	scr_01 $02, $00 ; TEMP
+	scr_spriteface $03, $00 ; TEMP
+	scr_spriteface $02, $01 ; TEMP
+	scr_spritewalk $02, $02 ; TEMP
+	scr_spriteface $02, $02 ; TEMP
+	scr_spritewalk $02, $03 ; TEMP
+	scr_spritewalk $02, $03 ; TEMP
+	scr_spriteface $02, $00 ; TEMP
 	scr_delay $03, $10 ; TEMP
-	scr_01 $02, $02 ; TEMP
-	scr_06 $02, $03 ; TEMP
-	scr_01 $02, $00 ; TEMP
-	scr_06 $02, $01 ; TEMP
-	scr_01 $02, $03 ; TEMP
+	scr_spriteface $02, $02 ; TEMP
+	scr_spritewalk $02, $03 ; TEMP
+	scr_spriteface $02, $00 ; TEMP
+	scr_spritewalk $02, $01 ; TEMP
+	scr_spriteface $02, $03 ; TEMP
 	scr_text text_0f_5446
 	scr_44
-	scr_06 $03, $01 ; TEMP
+	scr_spritewalk $03, $01 ; TEMP
 	scr_1c $03 ; TEMP
-	scr_01 $04, $03 ; TEMP
-	scr_06 $04, $04 ; TEMP
-	scr_01 $04, $00 ; TEMP
-	scr_06 $04, $01 ; TEMP
+	scr_spriteface $04, $03 ; TEMP
+	scr_spritewalk $04, $04 ; TEMP
+	scr_spriteface $04, $00 ; TEMP
+	scr_spritewalk $04, $01 ; TEMP
 	scr_1c $04 ; TEMP
 	scr_62 $01, $01 ; TEMP
 	scr_text text_0f_54ad
 	scr_text text_0f_54c5
-	scr_01 $02, $00 ; TEMP
+	scr_spriteface $02, $00 ; TEMP
 	scr_text text_0f_5521
 	scr_setbit $daa3, $01 ; TEMP
 	scr_end
@@ -534,13 +534,13 @@ unk_00f_458e:
 
 Script_00f_4592:
 	scr_checkbit wdaa3, $01, unk_00f_458e
-	scr_01 $02, $00 ; TEMP
+	scr_spriteface $02, $00 ; TEMP
 	scr_text text_0f_52fb
 	scr_face $01 ; TEMP
 	scr_move $4193 ; TEMP
 	scr_44
-	scr_06 $01, $01 ; TEMP
-	scr_01 $01, $01 ; TEMP
+	scr_spritewalk $01, $01 ; TEMP
+	scr_spriteface $01, $01 ; TEMP
 	scr_farjump unk_00f_4507
 	scr_end
 

@@ -5,10 +5,13 @@ scr_cont: MACRO
 	db script_continue
 ENDM
 
-	const script_01 ; $01
-scr_01: MACRO
-	db script_01
-	db \1 ; sprite ID?
+	const script_spriteface ; $01
+scr_spriteface: MACRO
+; sprite ID 0 is player
+; sprite ID 1 is follower
+; sprite ID 2+ is everything else
+	db script_spriteface
+	db \1 ; sprite ID
 	db \2 ; facing
 ENDM
 
@@ -36,9 +39,14 @@ scr_face: MACRO
 	db \1 ; facing
 ENDM
 
-	const script_06 ; $06
-scr_06: MACRO
-	db script_06
+	const script_spritewalk ; $06
+scr_spritewalk: MACRO
+; move a sprite in the direction
+; specified by MOVE_* in \2
+; this does NOT automatically make
+; the sprite face the appropriate
+; direction
+	db script_spritewalk
 	db \1
 	db \2
 ENDM
@@ -77,7 +85,7 @@ ENDM
 	const script_setmap ; $0c
 scr_setmap: MACRO
 ; This warps to a map in the same group
-; as the map the script is in
+; as the map the script is in.
 	db script_setmap
 	db \1 ; map
 	db \2 ; entrance?
@@ -85,6 +93,9 @@ ENDM
 
 	const script_movemap ; $0d
 scr_movemap: MACRO
+; Applies movement data to the loaded map.
+; It should be used with maps that have
+; no associated object events.
 	db script_movemap
 	dw \1 ; movement data (same as sprite)
 ENDM

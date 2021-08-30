@@ -81,19 +81,19 @@ unk_00b_4195::
 ScriptCommandTable:
 ; Entries correspond to script_* constants (see macros/script.asm)
 	dw Script_continue ; $00
-	dw Script_01       ; $01
+	dw Script_spriteface       ; $01
 	dw Script_delay    ; $02
 	dw Script_03       ; $03
 	dw Script_04       ; $04
 	dw Script_face     ; $05
-	dw Script_06       ; $06
+	dw Script_spritewalk       ; $06
 	dw Script_07       ; $07
 	dw Script_08       ; $08
 	dw Script_end      ; $09
 	dw Script_checkbit ; $0a
 	dw Script_setbit   ; $0b
 	dw Script_setmap   ; $0c
-	dw Script_0d       ; $0d
+	dw Script_movemap  ; $0d
 	dw Script_0e       ; $0e
 	dw Script_move     ; $0f
 	dw Script_10       ; $10
@@ -205,12 +205,12 @@ Script_continue:
 	call GetScriptByte
 	ret
 
-Script_01:
+Script_spriteface:
 	call GetSpriteIDByte
 	call GetScriptByte
-	ld a, [wcbfb]
+	ld a, [wSelectedObjectOffset]
 	ld c, a
-	ld b, $cd
+	ld b, HIGH(wVisibleObjects)
 	ld hl, 3
 	add hl, bc
 	ld a, [wScriptByte]
@@ -225,28 +225,30 @@ Script_01:
 	call Func_06f8
 	ret
 
-GetSpriteIDByte: ; 0b:4369
+GetSpriteIDByte:
 	call GetScriptByte
 	ld a, [wScriptByte]
 	cp $88
 	jr z, .asm_437f
 	cp $99
 	jr z, .asm_4386
+; sprite selected, translate this into
+; proper sprite position in RAM
 	swap a
 	sla a
-	ld [wcbfb], a
+	ld [wSelectedObjectOffset], a
 	ret
 
 .asm_437f
 	ld a, [wcd0b]
-	ld [wcbfb], a
+	ld [wSelectedObjectOffset], a
 	ret
 
 .asm_4386
 	ld a, [wdce5]
 	swap a
 	sla a
-	ld [wcbfb], a
+	ld [wSelectedObjectOffset], a
 	ret
 
 Script_delay:
@@ -287,9 +289,9 @@ Script_04:
 	call AdjustTextboxYPosition
 	xor a
 	ld [wScriptByte], a
-	ld a, [wcbfb]
+	ld a, [wSelectedObjectOffset]
 	ld c, a
-	ld b, $cd
+	ld b, HIGH(wVisibleObjects)
 	ld hl, 3
 	add hl, bc
 	ld a, [wcd03]
@@ -335,12 +337,12 @@ Script_face:
 	call Func_0426
 	ret
 
-Script_06:
+Script_spritewalk:
 	call GetSpriteIDByte
 	call GetScriptByte
-	ld a, [wcbfb]
+	ld a, [wSelectedObjectOffset]
 	ld c, a
-	ld b, $cd
+	ld b, HIGH(wVisibleObjects)
 	ld hl, $08
 	add hl, bc
 	ld a, [wScriptByte]
@@ -393,9 +395,9 @@ Func_00b_445e:
 
 Script_08:
 	call GetSpriteIDByte
-	ld a, [wcbfb]
+	ld a, [wSelectedObjectOffset]
 	ld c, a
-	ld b, $cd
+	ld b, HIGH(wVisibleObjects)
 	ld a, [bc]
 	ld [wcd08], a
 	inc bc
@@ -505,7 +507,7 @@ Script_setmap:
 	ld [wScriptByte], a
 	ret
 
-Script_0d:
+Script_movemap:
 	call GetScriptByte
 	ld a, [wScriptByte]
 	ld [wMovementPointer], a
@@ -632,10 +634,10 @@ Script_emote:
 	add hl, bc
 	ld a, [wScriptByte]
 	ld [hli], a
-	ld a, [wcbfb]
+	ld a, [wSelectedObjectOffset]
 	ld e, a
 	ld [hl], a
-	ld d, $cd
+	ld d, HIGH(wVisibleObjects)
 	ld hl, unk_00b_466b
 	ld a, [wScriptByte]
 	cp $06
@@ -706,7 +708,7 @@ Script_17:
 	swap a
 	sla a
 	ld l, a
-	ld h, $cd
+	ld h, HIGH(wVisibleObjects)
 	ld a, [wScriptByte]
 	add [hl]
 	ld [hli], a
@@ -748,9 +750,9 @@ Script_19:
 	ld a, [wScriptByte]
 	push af
 	call GetScriptByte
-	ld a, [wcbfb]
+	ld a, [wSelectedObjectOffset]
 	ld c, a
-	ld b, $cd
+	ld b, HIGH(wVisibleObjects)
 	ld hl, 0
 	add hl, bc
 	pop af
@@ -800,9 +802,9 @@ Script_1a:
 	ld a, [wScriptByte]
 	push af
 	call GetSpriteIDByte
-	ld a, [wcbfb]
+	ld a, [wSelectedObjectOffset]
 	ld c, a
-	ld b, $cd
+	ld b, HIGH(wVisibleObjects)
 	ld hl, $14
 	add hl, bc
 	pop af
@@ -825,9 +827,9 @@ Script_1a:
 
 Script_1b:
 	call GetSpriteIDByte
-	ld a, [wcbfb]
+	ld a, [wSelectedObjectOffset]
 	ld c, a
-	ld b, $cd
+	ld b, HIGH(wVisibleObjects)
 	ld hl, $14
 	add hl, bc
 	xor a
@@ -841,9 +843,9 @@ Script_1c:
 	call GetSpriteIDByte
 
 Func_00b_4799:
-	ld a, [wcbfb]
+	ld a, [wSelectedObjectOffset]
 	ld l, a
-	ld h, $cd
+	ld h, HIGH(wVisibleObjects)
 	ld c, $20
 	xor a
 .clear
@@ -855,9 +857,9 @@ Func_00b_4799:
 
 Script_1d:
 	call GetSpriteIDByte
-	ld a, [wcbfb]
+	ld a, [wSelectedObjectOffset]
 	ld c, a
-	ld b, $cd
+	ld b, HIGH(wVisibleObjects)
 	ld hl, 1
 	add hl, bc
 	ld a, [hl]
@@ -969,7 +971,7 @@ asm_00b_4856:
 	and a
 	jr nz, asm_00b_48ad
 	ld a, c
-	ld [wcbfb], a
+	ld [wSelectedObjectOffset], a
 	inc de
 	ld a, [de]
 	ld hl, 4
@@ -1045,9 +1047,9 @@ asm_00b_48b6:
 	call PlaySound
 	ld a, 2
 	ld [wd080], a
-	ld a, [wcbfb]
+	ld a, [wSelectedObjectOffset]
 	ld l, a
-	ld h, $cd
+	ld h, HIGH(wVisibleObjects)
 	ld a, [hl]
 	add 8
 	ld [hli], a
@@ -1070,9 +1072,9 @@ asm_00b_48e0:
 	ld [wd081], a
 	ld a, 3
 	ld [wd080], a
-	ld a, [wcbfb]
+	ld a, [wSelectedObjectOffset]
 	ld l, a
-	ld h, $cd
+	ld h, HIGH(wVisibleObjects)
 	ld a, [hl]
 	add $10
 	ld [hli], a
@@ -1093,9 +1095,9 @@ asm_00b_4907:
 	ld [wd081], a
 	ld a, 4
 	ld [wd080], a
-	ld a, [wcbfb]
+	ld a, [wSelectedObjectOffset]
 	ld l, a
-	ld h, $cd
+	ld h, HIGH(wVisibleObjects)
 	inc hl
 	ld a, [hl]
 	add $10
@@ -1116,9 +1118,9 @@ asm_00b_492e:
 	ld [wd081], a
 	ld a, 5
 	ld [wd080], a
-	ld a, [wcbfb]
+	ld a, [wSelectedObjectOffset]
 	ld l, a
-	ld h, $cd
+	ld h, HIGH(wVisibleObjects)
 	ld a, [hl]
 	sub $10
 	ld [hli], a
@@ -1143,15 +1145,15 @@ asm_00b_4955:
 
 Script_21:
 	call GetSpriteIDByte
-	ld a, [wcbfb]
+	ld a, [wSelectedObjectOffset]
 	ld l, a
-	ld h, $cd
+	ld h, HIGH(wVisibleObjects)
 	push hl
 	call GetSpriteIDByte
 	pop hl
-	ld a, [wcbfb]
+	ld a, [wSelectedObjectOffset]
 	ld c, a
-	ld b, $cd
+	ld b, HIGH(wVisibleObjects)
 	inc bc
 	inc hl
 	ld a, [hl]
@@ -1162,13 +1164,13 @@ Script_21:
 
 Script_22:
 	call GetSpriteIDByte
-	ld a, [wcbfb]
+	ld a, [wSelectedObjectOffset]
 	ld l, a
-	ld h, $cd
+	ld h, HIGH(wVisibleObjects)
 	push hl
 	call GetSpriteIDByte
 	pop hl
-	ld a, [wcbfb]
+	ld a, [wSelectedObjectOffset]
 	ld c, a
 	ld b, $cd
 	ld a, [hl]
@@ -1192,7 +1194,7 @@ asm_00b_49b6:
 
 asm_00b_49ba:
 	ld a, l
-	ld [wcbfb], a
+	ld [wSelectedObjectOffset], a
 	call GetScriptByte
 	ld a, [wScriptByte]
 	push af

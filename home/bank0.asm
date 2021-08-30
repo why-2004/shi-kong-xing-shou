@@ -895,7 +895,7 @@ Func_0915::
 	ret
 
 Func_0925::
-	ld a, [wcbfb]
+	ld a, [wSelectedObjectOffset]
 	ld c, a
 	ld b, $cd
 	jp Func_08ae

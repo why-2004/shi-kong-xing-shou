@@ -234,7 +234,7 @@ Script_012_417f:
 
 unk_012_4189:
 	db $53 ; TEMP
-	scr_01 $00, $02 ; TEMP
+	scr_spriteface $00, $02 ; TEMP
 	scr_end
 
 Script_012_418e:
@@ -243,17 +243,17 @@ Script_012_418e:
 
 unk_012_4193:
 	scr_face $02 ; TEMP
-	scr_01 $01, $02 ; TEMP
+	scr_spriteface $01, $02 ; TEMP
 	scr_1a $01, $00, $f0, $00 ; TEMP
 	db $76 ; TEMP
 	db $41 ; TEMP
 	scr_4e $00, unk_012_4d76
 	scr_1b $01 ; TEMP
-	scr_01 $01, $03 ; TEMP
-	scr_06 $01, $04 ; TEMP
-	scr_01 $01, $00 ; TEMP
-	scr_06 $01, $01 ; TEMP
-	scr_01 $01, $02 ; TEMP
+	scr_spriteface $01, $03 ; TEMP
+	scr_spritewalk $01, $04 ; TEMP
+	scr_spriteface $01, $00 ; TEMP
+	scr_spritewalk $01, $01 ; TEMP
+	scr_spriteface $01, $02 ; TEMP
 	scr_end
 
 Script_012_41b5:
@@ -262,17 +262,17 @@ Script_012_41b5:
 
 unk_012_41ba:
 	scr_face $03 ; TEMP
-	scr_01 $01, $03 ; TEMP
+	scr_spriteface $01, $03 ; TEMP
 	scr_1a $01, $00, $f0, $00 ; TEMP
 	db $76 ; TEMP
 	db $41 ; TEMP
 	scr_4e $00, unk_012_4db7
 	scr_1b $01 ; TEMP
-	scr_01 $01, $02 ; TEMP
-	scr_06 $01, $03 ; TEMP
-	scr_01 $01, $00 ; TEMP
-	scr_06 $01, $01 ; TEMP
-	scr_01 $01, $03 ; TEMP
+	scr_spriteface $01, $02 ; TEMP
+	scr_spritewalk $01, $03 ; TEMP
+	scr_spriteface $01, $00 ; TEMP
+	scr_spritewalk $01, $01 ; TEMP
+	scr_spriteface $01, $03 ; TEMP
 	scr_end
 
 ObjectEvents_012_41dc::

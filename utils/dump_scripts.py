@@ -43,7 +43,16 @@ with open('baserom.gbc', 'rb') as rom:
 			elif byte == 0x01:
 				arg1 = int.from_bytes(rom.read(1), "little")
 				arg2 = int.from_bytes(rom.read(1), "little")
-				print("\tscr_01 $%02x, $%02x ; TEMP" % (arg1, arg2))
+				if arg2 == 0:
+					print("\tscr_spriteface %2d, FACE_DOWN" % arg1)
+				elif arg2 == 1:
+					print("\tscr_spriteface %2d, FACE_UP" % arg1)
+				elif arg2 == 2:
+					print("\tscr_spriteface %2d, FACE_LEFT" % arg1)
+				elif arg2 == 3:
+					print("\tscr_spriteface %2d, FACE_RIGHT" % arg1)
+				else:
+					print("\tscr_spriteface %2d, $%02x ; TEMP" % (arg1, arg2))
 
 			elif byte == 0x02:
 				arg1 = int.from_bytes(rom.read(1), "little")
@@ -65,7 +74,18 @@ with open('baserom.gbc', 'rb') as rom:
 			elif byte == 0x06:
 				arg1 = int.from_bytes(rom.read(1), "little")
 				arg2 = int.from_bytes(rom.read(1), "little")
-				print("\tscr_06 $%02x, $%02x ; TEMP" % (arg1, arg2))
+				if arg2 == 0:
+					print("\tscr_spritewalk %2d, MOVE_DELAY" % arg1)
+				elif arg2 == 1:
+					print("\tscr_spritewalk %2d, MOVE_UP" % arg1)
+				elif arg2 == 2:
+					print("\tscr_spritewalk %2d, MOVE_DOWN" % arg1)
+				elif arg2 == 3:
+					print("\tscr_spritewalk %2d, MOVE_LEFT" % arg1)
+				elif arg2 == 4:
+					print("\tscr_spritewalk %2d, MOVE_RIGHT" % arg1)
+				else:
+					print("\tscr_spritewalk %2d, $%02x ; TEMP" % (arg1, arg2))
 
 			elif byte == 0x07:
 				print("\tscr_07")

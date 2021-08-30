@@ -7,7 +7,7 @@ Script_04f_4001:
 	scr_end
 .skip
 	db $66 ; TEMP
-	scr_01 $40, $4e ; TEMP
+	scr_spriteface $40, $4e ; TEMP
 	scr_end
 
 ObjectEvents_04f_4010:
@@ -219,9 +219,9 @@ Script_04f_44a2:
 	scr_checkbit wdaa5, $02, .skip
 	scr_setmap $0f, $01 ; TEMP
 	scr_face $02 ; TEMP
-	scr_01 $02, $02 ; TEMP
-	scr_01 $04, $01 ; TEMP
-	scr_01 $05, $01 ; TEMP
+	scr_spriteface $02, $02 ; TEMP
+	scr_spriteface $04, $01 ; TEMP
+	scr_spriteface $05, $01 ; TEMP
 	scr_emote $04, $04 ; TEMP
 	scr_delay $03, $20 ; TEMP
 	scr_text text_4f_5c0f
@@ -254,8 +254,8 @@ Script_04f_44a2:
 	scr_text text_4f_5ddb
 	scr_text text_4f_5dfe
 	scr_face $00 ; TEMP
-	scr_01 $04, $00 ; TEMP
-	scr_01 $05, $00 ; TEMP
+	scr_spriteface $04, $00 ; TEMP
+	scr_spriteface $05, $00 ; TEMP
 	scr_1a $05, $04, $00, $10 ; TEMP
 	scr_4e $04, text_4f_7ae1
 	scr_1c $04 ; TEMP
