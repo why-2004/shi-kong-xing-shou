@@ -257,7 +257,7 @@ Script_04f_44a2:
 	scr_spriteface $04, $00 ; TEMP
 	scr_spriteface $05, $00 ; TEMP
 	scr_1a $05, $04, $00, $10 ; TEMP
-	scr_4e $04, text_4f_7ae1
+	scr_4e $04, unk_4f_7ae1
 	scr_1c $04 ; TEMP
 	scr_1c $05 ; TEMP
 	scr_face $01 ; TEMP
@@ -406,55 +406,15 @@ Script_04f_4d94::
 	dr $13cd94, $13cdb2
 
 ObjectEvents_04f_4db2::
-	dr $13cdb2, $13dc0f
+	dr $13cdb2, $13cdbe
 
-text_4f_5c0f::
-	dr $13dc0f, $13dc7d
+Script_04f_4dbe::
+	dr $13cdbe, $13cde3
 
-text_4f_5c7d::
-	dr $13dc7d, $13dcb4
+INCLUDE "data/text/bank4f_misc.asm"
 
-text_4f_5cb4::
-	dr $13dcb4, $13dcdc
-
-text_4f_5cdc::
-	dr $13dcdc, $13dcf2
-
-text_4f_5cf2::
-	dr $13dcf2, $13dd1c
-
-text_4f_5d1c::
-	dr $13dd1c, $13dd38
-
-text_4f_5d38::
-	dr $13dd38, $13dd50
-
-text_4f_5d50::
-	dr $13dd50, $13dd6b
-
-text_4f_5d6b::
-	dr $13dd6b, $13dd74
-
-text_4f_5d74::
-	dr $13dd74, $13dd7d
-
-text_4f_5d7d::
-	dr $13dd7d, $13dd91
-
-text_4f_5d91::
-	dr $13dd91, $13dddb
-
-text_4f_5ddb::
-	dr $13dddb, $13ddfe
-
-text_4f_5dfe::
-	dr $13ddfe, $13de5b
-
-text_4f_5e5b::
-	dr $13de5b, $13fae1
-
-text_4f_7ae1::
-	dr $13fae1, $13fd00
+unk_4f_7ae1::
+	dr $13fae1, $13fcff
 
 SECTION "banknum4f", ROMX[$7fff], BANK[$4f]
 	db $4f
