@@ -93,7 +93,7 @@ JumpToModeAndSetMapPredefs::
 
 GameModes::
 ; Seems to load on each map entry
-	dba Func_005_41fb   ; $00
+	dba Overworld       ; $00
 	dba MeteorCutscene  ; $01
 	dba Func_03c_40d2   ; $02
 	dba Func_03c_4343   ; $03
@@ -360,10 +360,10 @@ Func_0531::
 	db $10, $00
 	db $00, $10
 	db $00, $f0
-	db $fa, $ff
-	db $7f, $f5
 
-Func_055b::
+Func_0557::
+	ld a, [_BANKNUM]
+	push af
 	ld a, [wd0c9]
 	ld [wcd01], a
 	ld a, [wd0ca]

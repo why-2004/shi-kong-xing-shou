@@ -322,6 +322,7 @@ AdjustTextboxYPosition:
 	ret
 
 Script_face:
+; Makes the player face a certain direction.
 	call GetScriptByte
 	ld a, [wScriptByte]
 	ld [wcd03], a

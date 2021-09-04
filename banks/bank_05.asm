@@ -261,21 +261,193 @@ MapEvent_07:
 	pop hl
 	ret
 
-Func_005_41fb::
-	dr $141fb, $14275
+Overworld::
+	call PlayMapMusic
+	ld a, $1C
+	ld [wdce7], a
+	xor a
+	ldh [hFade], a
+	ldh [hFFBC], a
+	ldh [hFFC2], a
+	xor a
+	ldh [hSCX], a
+	ldh [hFFAF], a
+	ldh [hSCY], a
+	ldh [hFFB1], a
+	ldh [hFF9F], a
+	ldh [hFFA0], a
+	ldh [hFFC2], a
+	ldh [hJoypadDown], a
+	ldh [hJoypadPressed], a
+	ld a, $FF
+	ldh [hFF9E], a
+	ld hl, wd1e3 + 2
+	ld c, $0C
+	xor a
+.fill
+	ld [hli], a
+	dec c
+	jr nz, .fill
+	call Func_005_4408
+	call Func_005_5a9c
+	call Func_05ff
+	call Func_005_5a32
+	ld hl, $9800
+	ld de, wTilemap
+	ld bc, $1412
+	ld a, $12
+	ld [hFF93], a
+	ld a, $14
+	ldh [hFF92], a
+	call Func_005_5a59
+	call Func_005_5a8e
+	call Func_005_4662
+	call Func_005_401d
+	call Func_0557
+	call Func_005_4000
+	xor a
+	ldh [hSimulatedJoypadState], a
+	ldh [hFFA4], a
+	call Func_0419
+	ld a, $C7
+	ldh [rLCDC], a
+	ld hl, wcab0
+	xor a
+	ldh [hFFC4], a
+	ldh [hFF9D], a
+	ld [wd9d2], a
+	call FadeInPalette
 
-Func_005_4275:
-	dr $14275, $142d3
+OverworldLoop:
+	call DelayFrame
+	ldh a, [hFF9D]
+	inc a
+	ldh [hFF9D], a
+	ldh a, [hFade]
+	and a
+	jp nz, Func_005_4304
+	ldh a, [hFFC5]
+	and a
+	jp nz, Func_005_42f5
+	ldh a, [hFFD3]
+	and a
+	jp nz, Func_005_42fb
+	call Func_005_43e1
+	call Func_0419
+	ldh a, [hScrollNumber]
+	and a
+	jp nz, Func_005_42ef
+	ldh a, [hFFBC]
+	and a
+	jp nz, Func_005_42e3
+	ldh a, [hFFD6]
+	and a
+	jp nz, Func_005_42d3
+	ld a, $01
+	ld [wd082], a
+	call Func_005_495f
+	ldh a, [hFade]
+	and a
+	jr nz, Func_005_4304
+	xor a
+	ld [wd082], a
+	ld a, [hFFD3]
+	and a
+	jr nz, OverworldLoop
+	call Func_005_4313
+	call Func_005_4bc1
+	call Func_005_576c
+	call Func_062c
+	call Func_0426
+	call Func_005_440f
+	jp OverworldLoop
 
 Func_005_42d3:
-	dr $142d3, $142f5
+	xor a
+	ld [wd082], a
+	call Func_06d0
+	call Func_005_440f
+	call Func_0426
+	jp OverworldLoop
+
+Func_005_42e3:
+	ld hl, wTextStart
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	call Func_06c6
+	jp OverworldLoop
+
+Func_005_42ef:
+	call Func_074d
+	jp OverworldLoop
 
 Func_005_42f5:
 	call Func_0b39
-	jp Func_005_4275
+	jp OverworldLoop
 
 Func_005_42fb:
-	dr $142fb, $14bc1
+	farcall BattleJumptable
+	jp OverworldLoop
+
+Func_005_4304:
+	ld a, [wcd03]
+	ld [wd0e3], a
+	ld a, [wcd23]
+	ld [wdcec], a
+	jp JumpToGameMode
+
+Func_005_4313:
+	ld a, [hMapGroup]
+	cp $04
+	ret nz
+	ldh a, [hMapNumber]
+	cp $06
+	jr z, Func_005_432c
+	cp $07
+	jr z, Func_005_432c
+	cp $08
+	jr z, Func_005_432c
+	cp $09
+	jr z, Func_005_432c
+	ret
+
+Func_005_432c:
+	ld a, [wdcb6 + 3]
+	and a
+	jr z, Func_005_434a
+	ld a, [wdcb6 + 2]
+	inc a
+	ld [wdcb6 + 2], a
+	cp $20
+	ret nz
+	xor a
+	ld [wdcb6 + 2], a
+	ld [wdcb6 + 3], a
+	ld hl, unk_005_4394
+	call PartialCopyBackgroundPalettes
+	ret
+
+Func_005_434a:
+	dr $1434a, $14394
+
+unk_005_4394:
+	dr $14394, $143e1
+
+Func_005_43e1:
+	dr $143e1, $14408
+
+Func_005_4408:
+	dr $14408, $1440f
+
+Func_005_440f:
+	dr $1440f, $14662
+
+Func_005_4662:
+	dr $14662, $1495f
+
+Func_005_495f:
+	dr $1495f, $14bc1
 
 Func_005_4bc1:
 	dr $14bc1, $14bfa
@@ -360,6 +532,7 @@ Func_005_4f3d:
 	ret
 
 Func_005_4f48:
+; on battle start
 	dr $14f48, $150a5
 
 Func_005_50a5:
@@ -422,7 +595,16 @@ Func_005_51db:
 	ret
 
 Func_005_51ed:
-	dr $151ed, $15a8e
+	dr $151ed, $1576c
+
+Func_005_576c:
+	dr $1576c, $15a32
+
+Func_005_5a32:
+	dr $15a32, $15a59
+
+Func_005_5a59:
+	dr $15a59, $15a8e
 
 Func_005_5a8e:
 	ld hl, wcd00
