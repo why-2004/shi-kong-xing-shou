@@ -262,13 +262,17 @@ MapEvent_07:
 	ret
 
 Overworld::
+; upon entering overworld
 	call PlayMapMusic
+; ?
 	ld a, $1C
 	ld [wdce7], a
+
 	xor a
 	ldh [hFade], a
-	ldh [hFFBC], a
-	ldh [hFFC2], a
+	ldh [hFFBC], a	; textbox enable
+	ldh [hFFC2], a	; map animations
+
 	xor a
 	ldh [hSCX], a
 	ldh [hFFAF], a
@@ -281,6 +285,7 @@ Overworld::
 	ldh [hJoypadPressed], a
 	ld a, $FF
 	ldh [hFF9E], a
+
 	ld hl, wd1e3 + 2
 	ld c, $0C
 	xor a
@@ -288,6 +293,7 @@ Overworld::
 	ld [hli], a
 	dec c
 	jr nz, .fill
+
 	call Func_005_4408
 	call Func_005_5a9c
 	call Func_05ff
@@ -320,49 +326,83 @@ Overworld::
 
 OverworldLoop:
 	call DelayFrame
+
+; increase frame counter
 	ldh a, [hFF9D]
 	inc a
 	ldh [hFF9D], a
+
+; check if we're fading to another map
 	ldh a, [hFade]
 	and a
-	jp nz, Func_005_4304
+	jp nz, Overworld_DoFade
+
+; check if we have any part of the start menu open
 	ldh a, [hFFC5]
 	and a
-	jp nz, Func_005_42f5
+	jp nz, Overworld_GotoProcessStartMenu
+
+; check if we should be in battle
 	ldh a, [hFFD3]
 	and a
-	jp nz, Func_005_42fb
+	jp nz, Overworld_GotoBattleJumptable
+
+; not in battle
+
 	call Func_005_43e1
+; update OAM?
 	call Func_0419
+
+; check if we should briefly display
+; a short text scroll now
 	ldh a, [hScrollNumber]
 	and a
-	jp nz, Func_005_42ef
+	jp nz, Overworld_GotoProcessScroll
+
+; check if we should be spawning
+; a text box
 	ldh a, [hFFBC]
 	and a
-	jp nz, Func_005_42e3
+	jp nz, Overworld_GotoProcessTextbox
+
+; check if we are currently in a script
 	ldh a, [hFFD6]
 	and a
-	jp nz, Func_005_42d3
+	jp nz, Overworld_GotoProcessScript
+
+; trigger joypad reading
 	ld a, $01
 	ld [wd082], a
-	call Func_005_495f
+
+; move one step
+	call Overworld_MovePlayerOneStep
+
+; check for fade (again)
 	ldh a, [hFade]
 	and a
-	jr nz, Func_005_4304
+	jr nz, Overworld_DoFade
+
+; disable joypad reading
 	xor a
 	ld [wd082], a
+
+; if we are in a battle, go back to loop
 	ld a, [hFFD3]
 	and a
 	jr nz, OverworldLoop
-	call Func_005_4313
+
+; specific events in the overworld
+	call Overworld_DoBlackFlashing
 	call Func_005_4bc1
-	call Func_005_576c
+	call Overworld_ProcessJoypadInput
+
+; object events?
 	call Func_062c
 	call Func_0426
 	call Func_005_440f
 	jp OverworldLoop
 
-Func_005_42d3:
+Overworld_GotoProcessScript:
 	xor a
 	ld [wd082], a
 	call Func_06d0
@@ -370,7 +410,7 @@ Func_005_42d3:
 	call Func_0426
 	jp OverworldLoop
 
-Func_005_42e3:
+Overworld_GotoProcessTextbox:
 	ld hl, wTextStart
 	ld a, [hli]
 	ld h, [hl]
@@ -378,41 +418,44 @@ Func_005_42e3:
 	call Func_06c6
 	jp OverworldLoop
 
-Func_005_42ef:
+Overworld_GotoProcessScroll:
 	call Func_074d
 	jp OverworldLoop
 
-Func_005_42f5:
+Overworld_GotoProcessStartMenu:
 	call Func_0b39
 	jp OverworldLoop
 
-Func_005_42fb:
+Overworld_GotoBattleJumptable:
 	farcall BattleJumptable
 	jp OverworldLoop
 
-Func_005_4304:
+Overworld_DoFade:
 	ld a, [wcd03]
 	ld [wd0e3], a
 	ld a, [wcd23]
 	ld [wdcec], a
 	jp JumpToGameMode
 
-Func_005_4313:
+Overworld_DoBlackFlashing:
+; for maps 04:06 through 04:09
+; flashes to black, and then flashes back
+; to the original palette
 	ld a, [hMapGroup]
 	cp $04
 	ret nz
 	ldh a, [hMapNumber]
 	cp $06
-	jr z, Func_005_432c
+	jr z, .DoFlash
 	cp $07
-	jr z, Func_005_432c
+	jr z, .DoFlash
 	cp $08
-	jr z, Func_005_432c
+	jr z, .DoFlash
 	cp $09
-	jr z, Func_005_432c
+	jr z, .DoFlash
 	ret
 
-Func_005_432c:
+.DoFlash:
 	ld a, [wdcb6 + 3]
 	and a
 	jr z, Func_005_434a
@@ -446,7 +489,7 @@ Func_005_440f:
 Func_005_4662:
 	dr $14662, $1495f
 
-Func_005_495f:
+Overworld_MovePlayerOneStep:
 	dr $1495f, $14bc1
 
 Func_005_4bc1:
@@ -597,7 +640,7 @@ Func_005_51db:
 Func_005_51ed:
 	dr $151ed, $1576c
 
-Func_005_576c:
+Overworld_ProcessJoypadInput:
 	dr $1576c, $15a32
 
 Func_005_5a32:
