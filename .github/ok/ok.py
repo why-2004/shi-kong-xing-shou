@@ -68,8 +68,25 @@ if __name__ == '__main__':
 	if check_md5('shi_kong_xing_shou.gbc', '24e73734490ad40f9d8228a80ff15c0b'):
 		print('OK')
 	else:
-		print('MISMATCHED')
+		print('NON MATCH')
 		exit_state += 1
+	
+	# enum banks
+	print()
+	bank_file = check_dr('banks/', 0, True)
+	bank_list = {}
+	for key, val in bank_file.items():
+		bank_num = re.search('banks/bank_([0-9a-f]{2})',key)
+		if bank_num:
+			bank_list[int(bank_num.group(1), 16)] = val
+
+	# assume the bank is filled if not on this list
+	for bank in range(0x7f):
+		if (bank+1) not in bank_list:
+			bank_list[bank+1] = 0
+	
+	for bank in range(0x7f):
+		print('bank %02x: %5d bytes left (%.1f%%)' % (bank+1, bank_list[bank+1], 100-(bank_list[bank+1]/16384*100)))
 	
 	# check percentage
 	with open('baserom.gbc', 'rb') as rom:

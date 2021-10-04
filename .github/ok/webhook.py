@@ -19,7 +19,7 @@ commit_hash = subprocess.Popen(["git", "rev-parse", "--short", "HEAD"], stdout=s
 if ok.check_md5('shi_kong_xing_shou.gbc', '24e73734490ad40f9d8228a80ff15c0b'):
 	match_string = 'OK'
 else:
-	match_string = 'FAILED'
+	match_string = 'NON MATCH'
 
 # check percentage
 with open('baserom.gbc', 'rb') as rom:
