@@ -502,9 +502,9 @@ Func_1c96::
 	call Func_0817
 	pop hl
 	call $421a
-	ld a, [wcbfe]
+	ld a, [wTextStart]
 	ld l, a
-	ld a, [wcbfe + 1]
+	ld a, [wTextStart + 1]
 	ld h, a
 	push hl
 	jp CheckCharacter
@@ -523,9 +523,9 @@ PrintTwoOptionMenu::
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	ld [wcbfe], a
+	ld [wTextStart], a
 	ld a, h
-	ld [wcbfe + 1], a
+	ld [wTextStart + 1], a
 	push hl
 	jp CheckCharacter
 
@@ -623,9 +623,9 @@ Func_1d41::
 	ld [wdcd3 + 1], a
 	ld hl, .unk_1d59
 	ld a, l
-	ld [wcbfe], a
+	ld [wTextStart], a
 	ld a, h
-	ld [wcbfe + 1], a
+	ld [wTextStart + 1], a
 	push hl
 	jp CheckCharacter
 
@@ -755,9 +755,9 @@ Func_1e07::
 Func_1e0a::
 	pop hl
 	call $6e4d
-	ld a, [wcbfe]
+	ld a, [wTextStart]
 	ld l, a
-	ld a, [wcbfe + 1]
+	ld a, [wTextStart + 1]
 	ld h, a
 	push hl
 	jp CheckCharacter
@@ -765,9 +765,9 @@ Func_1e0a::
 Func_1e1a::
 	pop hl
 	call $6de3
-	ld a, [wcbfe]
+	ld a, [wTextStart]
 	ld l, a
-	ld a, [wcbfe + 1]
+	ld a, [wTextStart + 1]
 	ld h, a
 	push hl
 	jp CheckCharacter
@@ -1079,9 +1079,9 @@ Func_1fe9::
 Func_1fee::
 	ldh a, [hScriptBank]
 	rst Bankswitch
-	ld a, [wd0cd]
+	ld a, [wObjectEventPointer]
 	ld l, a
-	ld a, [wd0cd + 1]
+	ld a, [wObjectEventPointer + 1]
 	ld h, a
 	ld de, wda00
 .read_byte
@@ -1105,9 +1105,10 @@ Func_1fee::
 	ld [de], a
 	ret
 
-Func_2011::
-	ld de, .table_209e
-	ldh a, [hFF9A]
+LoadMapData::
+; Load map group
+	ld de, .MapGroupPointers
+	ldh a, [hMapGroup]
 	ld l, a
 	ld c, a
 	ld b, 0
@@ -1124,7 +1125,8 @@ Func_2011::
 	ld a, [hli]
 	ld d, a
 
-	ldh a, [hFF9B]
+; Load map header from map number
+	ldh a, [hMapNumber]
 	ld l, a
 	ld h, 0
 	add hl, hl
@@ -1132,48 +1134,58 @@ Func_2011::
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	ld de, hFFB2
+
+; Load map attribute bank and etc.
+	ld de, hMapAttrBank
 REPT 4
 	ld a, [hli]
 	ld [de], a
 	inc de
 ENDR
-	ld a, [hli]
-	ld [wd0cb], a
-	ld a, [hli]
-	ld [wd0cb + 1], a
-	ld bc, $0c
-	ldh a, [hFF9C]
-	and a
-	jr z, .asm_2052
 
-.asm_204e
+; Map attribute pointer
+	ld a, [hli]
+	ld [wMapAttrPointer], a
+	ld a, [hli]
+	ld [wMapAttrPointer + 1], a
+
+; warp data length
+	ld bc, $0c
+
+; get warp data
+	ldh a, [hWarpNumber]
+	and a
+	jr z, .got_warp
+.get_warp
 	add hl, bc
 	dec a
-	jr nz, .asm_204e
-
-.asm_2052
+	jr nz, .get_warp
+.got_warp
 	ld a, [wd9d2]
 	and a
-	jr z, .asm_205e
+	jr z, .get_spawn_position
 
+; skip placing player
 	ld a, [hli]
 	ld a, [hli]
 	ld a, [hli]
 	ld a, [hli]
-	jr .asm_206c
+	jr .get_scripts
 
-.asm_205e
+.get_spawn_position
+; offset the map
 	ld a, [hli]
-	ldh [hFF96], a
+	ldh [hMapOffsetX], a
 	ld a, [hli]
-	ldh [hFF97], a
+	ldh [hMapOffsetY], a
+; where the player is placed on the screen
 	ld a, [hli]
-	ld [wd0c9], a
+	ld [wPlayerSpriteX], a
 	ld a, [hli]
-	ld [wd0ca], a
+	ld [wPlayerSpriteY], a
 
-.asm_206c
+.get_scripts
+; Script and object event bank
 	ld de, hScriptBank
 	ld a, [hli]
 	ld [de], a
@@ -1186,49 +1198,51 @@ ENDR
 	ld a, [hli]
 	inc de
 
+; Load object event pointer
 	ld a, [hli]
-	ld [wd0cd], a
+	ld [wObjectEventPointer], a
 	ld a, [hli]
-	ld [wd0cd + 1], a
+	ld [wObjectEventPointer + 1], a
+
+; Copy map events to df00
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	ld de, wdf00
-.asm_2086
+	ld de, wMapEvents
+.copy_map_events
 	ld a, [hli]
 	ld [de], a
 	inc de
-	cp $ff
+	cp -1
 	ret z
-
 REPT 5
 	ld a, [hli]
 	ld [de], a
 	inc de
 ENDR
-	jr .asm_2086
+	jr .copy_map_events
 	ret ; ?
 
-.table_209e
-	dba unk_007_4000
-	dba unk_007_430f
-	dba unk_010_4000
-	dba unk_010_487b
+.MapGroupPointers:
+	dba Group00_Maps
+	dba Group01_Maps
+	dba Group02_Maps
+	dba Group03_Maps
 	dba unk_052_4000
 	dba unk_063_4000
 	dba unk_069_4000
 	dba unk_069_4883
-	dba unk_010_4000
+	dba Group02_Maps
 
 Func_20b9::
-	ldh a, [hFFB2]
+	ldh a, [hMapAttrBank]
 	rst Bankswitch
 	push de
-	ldh a, [hFF97]
+	ldh a, [hMapOffsetY]
 	add c
 	ld c, a
-	ld hl, wc100
-	ld a, [hFF98]
+	ld hl, wMapLayout
+	ld a, [hMapWidth]
 	ld e, a
 	ld d, 0
 	ld a, c
@@ -1245,13 +1259,13 @@ Func_20b9::
 	ld a, d
 	ld c, a
 	ld d, 0
-	ldh a, [hFF96]
+	ldh a, [hMapOffsetX]
 	add e
 	ld e, a
 	add hl, de
-	ld a, [wd0a2]
+	ld a, [wMapBlocksPointer]
 	ld e, a
-	ld a, [wd0a2 + 1]
+	ld a, [wMapBlocksPointer + 1]
 	ld d, a
 	ld a, [hl]
 	ld l, a
@@ -1272,9 +1286,9 @@ Func_20b9::
 
 	inc hl
 .asm_20f6
-	ld a, [wd0b0]
+	ld a, [wMapCollisionsPointer]
 	ld e, a
-	ld a, [wd0b0 + 1]
+	ld a, [wMapCollisionsPointer + 1]
 	ld d, a
 	ld a, [hl]
 	ld l, a
@@ -1393,7 +1407,7 @@ Func_2123::
 	ld [wd3f4], a
 
 .asm_21a7
-	ldh a, [hFFA7]
+	ldh a, [hSimulatedJoypadState]
 	and a
 	ret nz
 	ld a, [hl]
@@ -1744,7 +1758,7 @@ Func_2363::
 	ret
 
 Func_23a6::
-	ldh a, [hFFBF]
+	ldh a, [hFade]
 	and a
 	ret nz
 	ld a, [wd1f1]

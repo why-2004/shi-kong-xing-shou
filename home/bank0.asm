@@ -55,25 +55,25 @@ Func_0200::
 	call SRAMTest
 
 	ld a, $03
-	ldh [hFF9B], a
+	ldh [hMapNumber], a
 	ld a, 0
-	ldh [hFF9C], a
+	ldh [hWarpNumber], a
 	ld [wd0ff], a
 	ld [wd0df], a
 	ld [wd0ef], a
 	ld a, 0
 	ld [hFFBA], a
-	call Func_15e7
+	call LoadMapAndScriptPredef
 	ld a, $12
-	ld [wd0fa], a
+	ld [wTargetMode], a
 
-Func_023b::
+JumpToGameMode::
 	ld bc, wcab0
 	xor a
 	ldh [hFFC4], a
 	call FadeOutPalette
-	ld de, unkTable_025c
-	ld a, [wd0fa]
+	ld de, GameModes
+	ld a, [wTargetMode]
 	ld l, a
 	ld h, 0
 	add hl, hl
@@ -87,45 +87,45 @@ Func_023b::
 	ld l, a
 	jp hl
 
-Func_0257::
-	call Func_15e7
-	jr Func_023b
+JumpToModeAndSetMapPredefs::
+	call LoadMapAndScriptPredef
+	jr JumpToGameMode
 
-unkTable_025c::
+GameModes::
 ; Seems to load on each map entry
-	dba Func_005_41fb   ; $00
+	dba Overworld       ; $00
 	dba MeteorCutscene  ; $01
-	dba Func_03c_40d2   ; $02
-	dba Func_03c_4343   ; $03
-	dba Func_01b_4000   ; $04
-	dba Func_05d_4000   ; $05
-	dba Func_04e_4943   ; $06
-	dba Func_055_4000   ; $07
-	dba Func_01a_4000   ; $08
-	dba Func_061_4000   ; $09
+	dba NewGameContinueMenu   ; $02
+	dba GameOver   ; $03
+	dba GaleCutscene   ; $04
+	dba RhythmMinigame   ; $05
+	dba AirportCutscene1   ; $06
+	dba AirportCutscene2   ; $07
+	dba LetterCutscene   ; $08
+	dba MeteorCutscene2   ; $09
 	dba Func_05c_55e7   ; $0a
-	dba Func_061_5d22   ; $0b
-	dba Func_05e_401c   ; $0c
-	dba Func_05f_4000   ; $0d
-	dba Func_05b_4000   ; $0e
-	dba Func_04e_46e5   ; $0f
-	dba Func_062_4000   ; $10
-	dba Func_04e_4637   ; $11
+	dba UnderwaterPictureCutscene   ; $0b
+	dba RacingMinigame   ; $0c
+	dba CrystalCutscene   ; $0d
+	dba MiceMinigame   ; $0e
+	dba AirportCutscene3   ; $0f
+	dba WorldMap   ; $10
+	dba AirportCutscene4   ; $11
 	dba Intro_VastFame  ; $12
-	dba Func_067_4000   ; $13
-	dba Func_067_506e   ; $14
-	dba Func_067_51f5   ; $15
-	dba Func_062_5df3   ; $16
-	dba Func_03c_40d2   ; $17
-	dba Func_03c_40d2   ; $18
+	dba BeachCutscene   ; $13
+	dba FloatingIslandCutscene1   ; $14
+	dba FloatingIslandCutscene2   ; $15
+	dba WorldMap2   ; $16
+	dba NewGameContinueMenu   ; $17
+	dba NewGameContinueMenu   ; $18
 	dba Debug_SoundTest ; $19
 	dba Func_03c_4c74   ; $1a
 	dba Func_07a_401f   ; $1b
 	dba Func_07a_4188   ; $1c
 	dba Func_06f_4000   ; $1d
 	dba Func_070_4000   ; $1e
-	dba Func_071_4000   ; $1f
-	dba Func_071_5a49   ; $20
+	dba Credits   ; $1f
+	dba TheEnd   ; $20
 
 DelayFrame::
 ; Wastes cycles until the VBlank interrupt occurs, where hVBlank is set to 1
@@ -360,13 +360,13 @@ Func_0531::
 	db $10, $00
 	db $00, $10
 	db $00, $f0
-	db $fa, $ff
-	db $7f, $f5
 
-Func_055b::
-	ld a, [wd0c9]
+Func_0557::
+	ld a, [_BANKNUM]
+	push af
+	ld a, [wPlayerSpriteX]
 	ld [wcd01], a
-	ld a, [wd0ca]
+	ld a, [wPlayerSpriteY]
 	ld [wcd00], a
 	ld a, 1
 	ld [wcd02], a
@@ -461,9 +461,9 @@ Func_05f2::
 Func_05ff::
 	ld a, [_BANKNUM]
 	push af
-	call Func_2011
-	call Func_2433
-	call Func_0f6e
+	call LoadMapData
+	call LoadMapAttrs
+	call LoadMapGFX
 	call Func_24be
 	call Func_1fee
 	call Func_19b6
@@ -726,12 +726,13 @@ Func_0817::
 	ld a, BANK(Func_005_4000)
 	rst Bankswitch
 	call Func_005_4000
-	call Func_005_4093
+	call ParseCurrentMapEvents
 	pop af
 	rst Bankswitch
 	ret
 
 Func_0827::
+	; on getting item
 	homecall Func_01e_41e8
 	ret
 
@@ -895,7 +896,7 @@ Func_0915::
 	ret
 
 Func_0925::
-	ld a, [wcbfb]
+	ld a, [wSelectedObjectOffset]
 	ld c, a
 	ld b, $cd
 	jp Func_08ae
@@ -1051,11 +1052,11 @@ Func_0a0a::
 	ld a, [_BANKNUM]
 	push af
 
-	ldh a, [hFFB2]
+	ldh a, [hMapAttrBank]
 	rst Bankswitch
-	ld a, [wd0a8]
+	ld a, [wMapPalettesPointer]
 	ld l, a
-	ld a, [wd0a8 + 1]
+	ld a, [wMapPalettesPointer + 1]
 	ld h, a
 	ld de, wcab0
 	ld c, $40
@@ -1341,20 +1342,20 @@ IncFillBoxVRAM::
 	ldh [rVBK], a
 	ret
 
-Func_0f36::
+LoadMapGFX2::
 	ld a, [_BANKNUM]
 	push af
-	ldh a, [hFFB2]
+	ldh a, [hMapAttrBank]
 	rst Bankswitch
 	call Func_259b
-	ld a, [wd0aa]
+	ld a, [wMapTileset1Pointer]
 	ld l, a
-	ld a, [wd0aa + 1]
+	ld a, [wMapTileset1Pointer + 1]
 	ld h, a
 	or l
 	jr nz, .not_zero
 
-	call Func_25a9
+	call LoadTilesetHeader
 	pop af
 	rst Bankswitch
 	ret
@@ -1363,9 +1364,9 @@ Func_0f36::
 	ld de, $9000
 	ld bc, $800
 	call CopyBytesVRAM
-	ld a, [wd0ac]
+	ld a, [wMapTileset2Pointer]
 	ld l, a
-	ld a, [wd0ac + 1]
+	ld a, [wMapTileset2Pointer + 1]
 	ld h, a
 	ld de, $8800
 	ld bc, $300
@@ -1374,20 +1375,20 @@ Func_0f36::
 	rst Bankswitch
 	ret
 
-Func_0f6e::
+LoadMapGFX::
 	ld a, [_BANKNUM]
 	push af
-	ldh a, [hFFB2]
+	ldh a, [hMapAttrBank]
 	rst Bankswitch
 	call Func_25a2
-	ld a, [wd0aa]
+	ld a, [wMapTileset1Pointer]
 	ld l, a
-	ld a, [wd0aa + 1]
+	ld a, [wMapTileset1Pointer + 1]
 	ld h, a
 	or l
 	jr nz, .not_zero
 
-	call Func_25a9
+	call LoadTilesetHeader
 	pop af
 	rst Bankswitch
 	ret
@@ -1397,9 +1398,9 @@ Func_0f6e::
 	ld bc, $800
 	call CopyBytesVRAM
 	call DelayFrame
-	ld a, [wd0ac]
+	ld a, [wMapTileset2Pointer]
 	ld l, a
-	ld a, [wd0ac + 1]
+	ld a, [wMapTileset2Pointer + 1]
 	ld h, a
 	ld de, $8800
 	ld bc, $300
@@ -2224,9 +2225,9 @@ Func_13d5::
 	push af
 	ldh a, [hScriptBank]
 	rst Bankswitch
-	ld a, [wd0cd]
+	ld a, [wObjectEventPointer]
 	ld l, a
-	ld a, [wd0cd + 1]
+	ld a, [wObjectEventPointer + 1]
 	ld h, a
 	ld de, wda00
 .asm_13e7
@@ -2252,9 +2253,9 @@ Func_13d5::
 	rst Bankswitch
 	ret
 
-Func_13fe::
-	ld de, .unk_141c
-	ldh a, [hFF9A]
+PlayMapMusic::
+	ld de, .map_music
+	ldh a, [hMapGroup]
 	ld l, a
 	ld h, 0
 	add hl, hl
@@ -2262,7 +2263,7 @@ Func_13fe::
 	ld a, [hli]
 	ld e, a
 	ld d, [hl]
-	ldh a, [hFF9B]
+	ldh a, [hMapNumber]
 	ld l, a
 	ld h, 0
 	add hl, de
@@ -2277,81 +2278,81 @@ Func_13fe::
 	call PlaySound
 	ret
 
-.unk_141c
-	dw .unk_142c
-	dw .unk_1462
-	dw .unk_1498
-	dw .unk_14bc
-	dw .unk_14e0
-	dw .unk_1546
-	dw .unk_156e
-	dw .unk_159b
+.map_music
+	dw .group_0
+	dw .group_1
+	dw .group_2
+	dw .group_3
+	dw .group_4
+	dw .group_5
+	dw .group_6
+	dw .group_7
 
-.unk_142c
-	db $00, $59, $65, $65, $59, $59, $59, $59
-	db $59, $65, $65, $65, $5e, $5e, $5e, $5e
-	db $5e, $5e, $5e, $71, $72, $67, $67, $67
-	db $67, $67, $67, $72, $6e, $6f, $6f, $6f
-	db $6f, $6f, $69, $66, $66, $66, $66, $66
-	db $5b, $5a, $65, $66, $64, $60, $60, $60
-	db $60, $60, $60, $60, $71, $72
+.group_0
+	db SFX_00, BGM_59, BGM_65, BGM_65, BGM_59, BGM_59, BGM_59, BGM_59
+	db BGM_59, BGM_65, BGM_65, BGM_65, BGM_5e, BGM_5e, BGM_5e, BGM_5e
+	db BGM_5e, BGM_5e, BGM_5e, BGM_71, BGM_72, BGM_67, BGM_67, BGM_67
+	db BGM_67, BGM_67, BGM_67, BGM_72, BGM_6e, BGM_6f, BGM_6f, BGM_6f
+	db BGM_6f, BGM_6f, BGM_69, BGM_66, BGM_66, BGM_66, BGM_66, BGM_66
+	db BGM_5b, BGM_5a, BGM_65, BGM_66, BGM_64, BGM_60, BGM_60, BGM_60
+	db BGM_60, BGM_60, BGM_60, BGM_60, BGM_71, BGM_72
 
-.unk_1462
-	db $00, $5b, $65, $65, $5b, $5b, $5b, $5b
-	db $59, $65, $65, $65, $5e, $5e, $5e, $5e
-	db $5e, $5e, $5e, $71, $72, $67, $67, $67
-	db $67, $67, $67, $72, $6e, $6f, $6f, $6f
-	db $6f, $6f, $69, $66, $66, $66, $66, $66
-	db $63, $5a, $65, $66, $64, $60, $60, $60
-	db $60, $60, $60, $60, $71, $72
+.group_1
+	db SFX_00, BGM_5b, BGM_65, BGM_65, BGM_5b, BGM_5b, BGM_5b, BGM_5b
+	db BGM_59, BGM_65, BGM_65, BGM_65, BGM_5e, BGM_5e, BGM_5e, BGM_5e
+	db BGM_5e, BGM_5e, BGM_5e, BGM_71, BGM_72, BGM_67, BGM_67, BGM_67
+	db BGM_67, BGM_67, BGM_67, BGM_72, BGM_6e, BGM_6f, BGM_6f, BGM_6f
+	db BGM_6f, BGM_6f, BGM_69, BGM_66, BGM_66, BGM_66, BGM_66, BGM_66
+	db BGM_63, BGM_5a, BGM_65, BGM_66, BGM_64, BGM_60, BGM_60, BGM_60
+	db BGM_60, BGM_60, BGM_60, BGM_60, BGM_71, BGM_72
 
-.unk_1498
-	db $00, $5e, $59, $66, $66, $66, $61, $61
-	db $60, $69, $69, $69, $69, $69, $5e, $5e
-	db $5e, $5e, $59, $59, $59, $59, $59, $61
-	db $6d, $72, $71, $5e, $5e, $5e, $5e, $5e
-	db $5e, $72, $71, $5b
+.group_2
+	db SFX_00, BGM_5e, BGM_59, BGM_66, BGM_66, BGM_66, BGM_61, BGM_61
+	db BGM_60, BGM_69, BGM_69, BGM_69, BGM_69, BGM_69, BGM_5e, BGM_5e
+	db BGM_5e, BGM_5e, BGM_59, BGM_59, BGM_59, BGM_59, BGM_59, BGM_61
+	db BGM_6d, BGM_72, BGM_71, BGM_5e, BGM_5e, BGM_5e, BGM_5e, BGM_5e
+	db BGM_5e, BGM_72, BGM_71, BGM_5b
 
-.unk_14bc
-	db $00, $5d, $5d, $5d, $5f, $5f, $5f, $67
-	db $67, $59, $5e, $68, $68, $68, $68, $72
-	db $70, $70, $5b, $5b, $5b, $60, $61, $67
-	db $67, $67, $67, $67, $67, $72, $71, $5d
-	db $5f, $5b, $5b, $5b
+.group_3
+	db SFX_00, BGM_5d, BGM_5d, BGM_5d, BGM_5f, BGM_5f, BGM_5f, BGM_67
+	db BGM_67, BGM_59, BGM_5e, BGM_68, BGM_68, BGM_68, BGM_68, BGM_72
+	db BGM_70, BGM_70, BGM_5b, BGM_5b, BGM_5b, BGM_60, BGM_61, BGM_67
+	db BGM_67, BGM_67, BGM_67, BGM_67, BGM_67, BGM_72, BGM_71, BGM_5d
+	db BGM_5f, BGM_5b, BGM_5b, BGM_5b
 
-.unk_14e0
-	db $00, $64, $64, $64, $64, $64, $5b, $5b
-	db $5b, $5b, $5b, $6e, $59, $59, $63, $64
-	db $63, $59, $59, $59, $5e, $60, $5b, $5c
-	db $5c, $5c, $60, $60, $60, $60, $63, $5e
-	db $63, $66, $66, $66, $66, $6e, $5e, $5e
-	db $6d, $6d, $62, $67, $6e, $6e, $6e, $6e
-	db $6e, $72, $71, $6e, $5e, $5e, $5e, $5e
-	db $71, $72, $6e, $6e, $6e, $6e, $6e, $6e
-	db $72, $71, $65, $65, $59, $6e, $6e, $6e
-	db $6e, $6e, $6e, $72, $71, $6e, $5a, $63
-	db $5c, $5c, $5c, $69, $69, $6d, $5e, $5e
-	db $5e, $5e, $5e, $5e, $72, $71, $62, $67
-	db $5a, $5a, $5a, $5a, $70, $70
+.group_4
+	db SFX_00, BGM_64, BGM_64, BGM_64, BGM_64, BGM_64, BGM_5b, BGM_5b
+	db BGM_5b, BGM_5b, BGM_5b, BGM_6e, BGM_59, BGM_59, BGM_63, BGM_64
+	db BGM_63, BGM_59, BGM_59, BGM_59, BGM_5e, BGM_60, BGM_5b, BGM_5c
+	db BGM_5c, BGM_5c, BGM_60, BGM_60, BGM_60, BGM_60, BGM_63, BGM_5e
+	db BGM_63, BGM_66, BGM_66, BGM_66, BGM_66, BGM_6e, BGM_5e, BGM_5e
+	db BGM_6d, BGM_6d, BGM_62, BGM_67, BGM_6e, BGM_6e, BGM_6e, BGM_6e
+	db BGM_6e, BGM_72, BGM_71, BGM_6e, BGM_5e, BGM_5e, BGM_5e, BGM_5e
+	db BGM_71, BGM_72, BGM_6e, BGM_6e, BGM_6e, BGM_6e, BGM_6e, BGM_6e
+	db BGM_72, BGM_71, BGM_65, BGM_65, BGM_59, BGM_6e, BGM_6e, BGM_6e
+	db BGM_6e, BGM_6e, BGM_6e, BGM_72, BGM_71, BGM_6e, BGM_5a, BGM_63
+	db BGM_5c, BGM_5c, BGM_5c, BGM_69, BGM_69, BGM_6d, BGM_5e, BGM_5e
+	db BGM_5e, BGM_5e, BGM_5e, BGM_5e, BGM_72, BGM_71, BGM_62, BGM_67
+	db BGM_5a, BGM_5a, BGM_5a, BGM_5a, BGM_70, BGM_70
 
-.unk_1546
-	db $00, $5a, $5a, $66, $66, $66, $66, $5c
-	db $64, $64, $64, $64, $64, $64, $64, $5c
-	db $5c, $5c, $5c, $5c, $5c, $5c, $63, $63
-	db $63, $66, $66, $5c, $5b, $5c, $5c, $5c
-	db $5c, $72, $71, $65, $65, $65, $65, $5c
+.group_5
+	db SFX_00, BGM_5a, BGM_5a, BGM_66, BGM_66, BGM_66, BGM_66, BGM_5c
+	db BGM_64, BGM_64, BGM_64, BGM_64, BGM_64, BGM_64, BGM_64, BGM_5c
+	db BGM_5c, BGM_5c, BGM_5c, BGM_5c, BGM_5c, BGM_5c, BGM_63, BGM_63
+	db BGM_63, BGM_66, BGM_66, BGM_5c, BGM_5b, BGM_5c, BGM_5c, BGM_5c
+	db BGM_5c, BGM_72, BGM_71, BGM_65, BGM_65, BGM_65, BGM_65, BGM_5c
 
-.unk_156e
-	db $00, $68, $68, $61, $61, $61, $61, $61
-	db $5b, $64, $60, $5a, $6e, $63, $5b, $60
-	db $60, $60, $60, $60, $60, $60, $60, $60
-	db $70, $70, $70, $70, $72, $71, $63, $63
-	db $62, $5f, $6e, $6e, $6e, $6e, $6e, $6e
-	db $71, $72, $5f, $61, $69
+.group_6
+	db SFX_00, BGM_68, BGM_68, BGM_61, BGM_61, BGM_61, BGM_61, BGM_61
+	db BGM_5b, BGM_64, BGM_60, BGM_5a, BGM_6e, BGM_63, BGM_5b, BGM_60
+	db BGM_60, BGM_60, BGM_60, BGM_60, BGM_60, BGM_60, BGM_60, BGM_60
+	db BGM_70, BGM_70, BGM_70, BGM_70, BGM_72, BGM_71, BGM_63, BGM_63
+	db BGM_62, BGM_5f, BGM_6e, BGM_6e, BGM_6e, BGM_6e, BGM_6e, BGM_6e
+	db BGM_71, BGM_72, BGM_5f, BGM_61, BGM_69
 
-.unk_159b
-	db $00, $5f, $59, $6e, $5c, $6d, $63, $67
-	db $59, $60, $5e, $5e, $5e
+.group_7
+	db SFX_00, BGM_5f, BGM_59, BGM_6e, BGM_5c, BGM_6d, BGM_63, BGM_67
+	db BGM_59, BGM_60, BGM_5e, BGM_5e, BGM_5e
 
 Func_15a8::
 	push hl
@@ -2421,8 +2422,8 @@ Func_15a8::
 	ldh [rVBK], a
 	ret
 
-Func_15e7::
-	ld de, .unk_15f6
+LoadMapAndScriptPredef::
+	ld de, .Predefs
 	ld a, [hFFBA]
 	ld l, a
 	ld h, 0
@@ -2433,12 +2434,12 @@ Func_15e7::
 	ld l, a
 	jp hl
 
-.unk_15f6
-	dw Func_1620 ; $00
+.Predefs
+	dw MapPredef_BallotsHouseIntro ; $00
 	dw Func_1730 ; $01
 	dw Func_1730 ; $02
 	dw Func_1900 ; $03
-	dw Func_16f4 ; $04
+	dw MapPredef_AfterMeteorShower ; $04
 	dw Func_1712 ; $05
 	dw Func_1730 ; $06
 	dw Func_1730 ; $07
@@ -2456,13 +2457,13 @@ Func_15e7::
 	dw Func_1730 ; $13
 	dw Func_1730 ; $14
 
-Func_1620::
+MapPredef_BallotsHouseIntro::
 	ld hl, wdd00
 	ld [hl], $01
-	ld a, $04
-	ldh [hFF9B], a
+	ld a, MAP_BALLOTS_HOUSE_1
+	ldh [hMapNumber], a
 	ld a, 1
-	ldh [hFF9C], a
+	ldh [hWarpNumber], a
 	ld a, 1
 	ldh [hFFD6], a
 
@@ -2591,13 +2592,13 @@ Func_16ea::
 	ld [rRAMG], a
 	jp Func_1661
 
-Func_16f4::
+MapPredef_AfterMeteorShower::
+	ld a, GROUP_BALLOTS_HOUSE_2
+	ldh [hMapGroup], a
+	ld a, MAP_BALLOTS_HOUSE_2
+	ldh [hMapNumber], a
 	ld a, 1
-	ldh [hFF9A], a
-	ld a, $04
-	ldh [hFF9B], a
-	ld a, 1
-	ldh [hFF9C], a
+	ldh [hWarpNumber], a
 	ld a, 1
 	ldh [hFFD6], a
 
@@ -2611,11 +2612,11 @@ Func_16f4::
 
 Func_1712::
 	ld a, 4
-	ldh [hFF9A], a
+	ldh [hMapGroup], a
 	ld a, $43
-	ldh [hFF9B], a
+	ldh [hMapNumber], a
 	ld a, 1
-	ldh [hFF9C], a
+	ldh [hWarpNumber], a
 	ld a, 1
 	ldh [hFFD6], a
 
@@ -2689,11 +2690,11 @@ Func_1730::
 	ld a, $1a
 	ld [hFFBA], a
 	ld a, $0c
-	ldh [hFF9B], a
+	ldh [hMapNumber], a
 	ld a, 3
-	ldh [hFF9C], a
+	ldh [hWarpNumber], a
 	ld a, 6
-	ldh [hFF9A], a
+	ldh [hMapGroup], a
 
 	ld a, $01
 	ld [wdcbb], a
@@ -2962,11 +2963,11 @@ Func_1900::
 	ld a, 0
 	ld [hFFBA], a
 	ld a, $01
-	ldh [hFF9B], a
+	ldh [hMapNumber], a
 	ld a, 0
-	ldh [hFF9C], a
+	ldh [hWarpNumber], a
 	ld a, 0
-	ldh [hFF9A], a
+	ldh [hMapGroup], a
 	ld a, 1
 	ld [wdcbb], a
 
@@ -2996,20 +2997,25 @@ Func_19b6::
 
 INCLUDE "home/text.asm"
 
-Func_2433::
-	ldh a, [hFFB2]
+LoadMapAttrs::
+; load map attribute pointer
+	ldh a, [hMapAttrBank]
 	rst Bankswitch
-	ld a, [wd0cb]
+	ld a, [wMapAttrPointer]
 	ld l, a
-	ld a, [wd0cb + 1]
+	ld a, [wMapAttrPointer + 1]
 	ld h, a
-	ld de, hFF98
+
+; map size
+	ld de, hMapWidth
 	ld a, [hli]
 	ld [de], a
-	inc de
+	inc de ; hMapHeight
 	ld a, [hli]
 	ld [de], a
-	ld de, wd0a0
+
+; copy map attribute data
+	ld de, wMapAttributes
 	ld c, $12
 .copy
 	ld a, [hli]
@@ -3018,15 +3024,16 @@ Func_2433::
 	dec c
 	jr nz, .copy
 
+; load map layout?
 	ld a, $98
 	ld [wd0ba + 1], a
 	ld a, $00
 	ld [wd0ba], a
-	ldh a, [hFF98]
+	ldh a, [hMapWidth]
 	add a
 	sub 10
 	ldh [hFFA8], a
-	ldh a, [hFF99]
+	ldh a, [hMapHeight]
 	add a
 	sub 9
 	ldh [hFFA9], a
@@ -3038,7 +3045,7 @@ Func_2433::
 	jr .asm_2478
 
 .asm_2473
-	ldh a, [hFF96]
+	ldh a, [hMapOffsetX]
 	add a
 	ldh [hFFAA], a
 
@@ -3061,7 +3068,7 @@ ENDR
 	jr .asm_24a2
 
 .asm_249d
-	ldh a, [hFF97]
+	ldh a, [hMapOffsetY]
 	add a
 	ldh [hFFAB], a
 
@@ -3098,11 +3105,11 @@ Func_24d1::
 	ret
 
 Func_24e6::
-	ld a, [hFF9A]
+	ld a, [hMapGroup]
 	cp 1
 	ret nz
 
-	ld a, [hFF9B]
+	ld a, [hMapNumber]
 	cp $23
 	jr z, .asm_2504
 	cp $24
@@ -3134,13 +3141,13 @@ Func_24e6::
 	ret
 
 Func_2529::
-	ld hl, wc100
-	ldh a, [hFF97]
+	ld hl, wMapLayout
+	ldh a, [hMapOffsetY]
 	ld b, a
 	and a
 	jr z, .skip
 
-	ldh a, [hFF98]
+	ldh a, [hMapWidth]
 	ld e, a
 	ld d, 0
 .asm_2537
@@ -3149,20 +3156,20 @@ Func_2529::
 	jr nz, .asm_2537
 
 .skip
-	ldh a, [hFF96]
+	ldh a, [hMapOffsetX]
 	ld e, a
 	ld d, 0
 	add hl, de
 	ld a, l
-	ld [wd0a0], a
+	ld [wMapLayoutPointer], a
 	ld a, h
-	ld [wd0a0 + 1], a
+	ld [wMapLayoutPointer + 1], a
 	ret
 
 Func_254a::
-	ld a, [wd0a6]
+	ld a, [wMapGBCAttrPointer]
 	ld l, a
-	ld a, [wd0a6 + 1]
+	ld a, [wMapGBCAttrPointer + 1]
 	ld h, a
 	ld de, wce00
 .asm_2555
@@ -3175,15 +3182,15 @@ Func_254a::
 
 .asm_255e
 	call Func_2c03
-	ld a, [wd0b0]
+	ld a, [wMapCollisionsPointer]
 	ld l, a
-	ld a, [wd0b0 + 1]
+	ld a, [wMapCollisionsPointer + 1]
 	ld h, a
 	ld de, wcf00
 	ld a, e
-	ld [wd0b0], a
+	ld [wMapCollisionsPointer], a
 	ld a, d
-	ld [wd0b0 + 1], a
+	ld [wMapCollisionsPointer + 1], a
 .asm_2574
 	ld a, [hli]
 	cp $ff
@@ -3193,17 +3200,17 @@ Func_254a::
 	jr .asm_2574
 
 Func_257c::
-	ld a, [wd0a0]
+	ld a, [wMapLayoutPointer]
 	ld l, a
-	ld a, [wd0a0 + 1]
+	ld a, [wMapLayoutPointer + 1]
 	ld h, a
 	ld a, [hli]
 	ld [wd0f4], a
-	ld de, wc100
-	ldh a, [hFF99]
+	ld de, wMapLayout
+	ldh a, [hMapHeight]
 	ld b, a
 .asm_258e
-	ldh a, [hFF98]
+	ldh a, [hMapWidth]
 	ld c, a
 .asm_2591
 	ld a, [hli]
@@ -3225,39 +3232,48 @@ Func_25a2::
 	call Func_0a46
 	ret
 
-Func_25a9::
-	ld a, $06
+LoadTilesetHeader::
+; always from bank 06
+	ld a, BANK(Tilesets)
 	rst Bankswitch
-	ld a, [wd0ac]
+
+	ld a, [wMapTileset2Pointer]
 	ld l, a
-	ld a, [wd0ac + 1]
+	ld a, [wMapTileset2Pointer + 1]
 	ld h, a
-.asm_25b4
+.load_tileset
 	ld a, [hli]
-	cp $ff
+	cp -1
 	ret z
 
-	ld [wd9f9], a
+; load params for CopyBytesVRAM
+; bank
+	ld [wTilesetBank], a
+; location
 	ld a, [hli]
 	ld e, a
 	ld a, [hli]
 	ld d, a
+; byte count
 	ld a, [hli]
 	ld c, a
 	ld a, [hli]
 	ld b, a
+; GFX address
 	ld a, [hli]
 	push hl
 	ld h, [hl]
 	ld l, a
-	ld a, [wd9f9]
+; load tileset to VRAM
+	ld a, [wTilesetBank]
 	rst Bankswitch
 	call CopyBytesVRAM
 	pop hl
 	inc hl
-	ld a, $06
+; bankswitch back
+	ld a, BANK(Tilesets)
 	rst Bankswitch
-	jp .asm_25b4 ; jr
+	jp .load_tileset ; jr
 
 Func_25d6::
 	ld a, [wd08f]
@@ -3431,16 +3447,16 @@ CopyBytes2::
 	ret
 
 Func_26e1::
-	ldh a, [hFFB2]
+	ldh a, [hMapAttrBank]
 	rst Bankswitch
 	ld hl, wc740
 	ld a, l
 	ld [wd0b2], a
 	ld a, h
 	ld [wd0b2 + 1], a
-	ld a, [wd0a0]
+	ld a, [wMapLayoutPointer]
 	ld l, a
-	ld a, [wd0a0 + 1]
+	ld a, [wMapLayoutPointer + 1]
 	ld h, a
 	ld b, 5
 .asm_26f9
@@ -3451,9 +3467,9 @@ Func_26e1::
 	push hl
 	ld l, a
 	ld h, 0
-	ld a, [wd0a2]
+	ld a, [wMapBlocksPointer]
 	ld e, a
-	ld a, [wd0a2 + 1]
+	ld a, [wMapBlocksPointer + 1]
 	ld d, a
 	add hl, hl
 	add hl, hl
@@ -3468,9 +3484,9 @@ Func_26e1::
 	ld h, 0
 	add hl, hl
 	add hl, hl
-	ld a, [wd0a4]
+	ld a, [wMapMetatilesPointer]
 	ld e, a
-	ld a, [wd0a4 + 1]
+	ld a, [wMapMetatilesPointer + 1]
 	ld d, a
 	add hl, de
 	ld a, [wd0b2]
@@ -3510,7 +3526,7 @@ Func_26e1::
 	dec c
 	jp nz, .asm_26fb
 
-	ldh a, [hFF98]
+	ldh a, [hMapWidth]
 	sub 6
 	add l
 	ld l, a

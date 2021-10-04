@@ -16,7 +16,8 @@ SCANINC := tools/scan_includes
 SOURCES := \
 	home.asm \
 	main.asm \
-	wram.asm
+	wram.asm \
+	hram.asm
 
 OBJS := $(SOURCES:%.asm=%.o)
 
@@ -31,7 +32,7 @@ ROM_TITLE := "TIMER MONSTER  "
 .PRECIOUS:
 .SECONDARY:
 
-all: $(ROM)
+all: compare
 
 tools:
 	@$(MAKE) -C tools/
@@ -41,14 +42,24 @@ compare: $(ROM)
 
 clean:
 	$(RM) $(ROM) $(MAP) $(SYM) $(OBJS)
-	$(RM) data/text/*.asm		# Text preprocessor generated files
+	$(RM) data/text/*.asm
+	$(RM) data/maps/{blocks,layouts,metatiles}/*.bin
+	$(if $(shell find -iname '*.1bpp'),\
+		$(RM) $(shell find -iname '*.1bpp') \
+	)
+	$(if $(shell find -iname '*.2bpp'),\
+		$(RM) $(shell find -iname '*.2bpp') \
+	)
+	$(if $(shell find -iname '*.gbcpal'),\
+		$(RM) $(shell find -iname '*.gbcpal') \
+	)
 	$(MAKE) clean -C tools/
 
 # The dep rules have to be explicit or else missing files won't be reported.
 # As a side effect, they're evaluated immediately instead of when the rule is invoked.
 # It doesn't look like $(shell) can be deferred so there might not be a better way.
 define DEP
-$1: $2 $$(shell tools/scan_includes $2)
+$1: $2 $$(shell $(SCANINC) $2)
 	$$(ASM) $$(ASMFLAGS) -o $$@ $$<
 endef
 
@@ -68,12 +79,22 @@ $(ROM): $(OBJS)
 data/text/%.asm: data/text/%.txt
 	$(PYTHON) tools/tx_parse.py $< > $@
 
+### Generate maps
+
+data/maps/metatiles/%.bin: data/maps/metatiles/%.tmx
+	$(PYTHON) tools/tmx2data.py $< $@
+
+data/maps/blocks/%.bin: data/maps/blocks/%.tmx
+	$(PYTHON) tools/tmx2data.py $< $@
+
+data/maps/layouts/%.bin: data/maps/layouts/%.tmx
+	$(PYTHON) tools/tmx2data.py $< $@
 
 ### Misc file-specific graphics rules
 
 gfx/character_set/%.1bpp: tools/gfx += --interleave --png=$<
 gfx/battle/%.2bpp: tools/gfx += --interleave --png=$<
-
+gfx/intro/sprites/%.2bpp: tools/gfx += --interleave --remove-whitespace --png=$<
 
 ### Catch-all graphics rules
 

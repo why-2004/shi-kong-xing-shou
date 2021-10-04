@@ -1,3 +1,6 @@
+INCLUDE "constants.asm"
+
+
 SECTION "HRAM", HRAM[$ff8c]
 
 hFF8C:: ds 1
@@ -15,15 +18,16 @@ hFF93:: ds 1
 hJoypadPressed:: ds 1
 hJoypadDown:: ds 1
 
-hFF96:: ds 1
-hFF97:: ds 1
+hMapOffsetX:: ds 1
+hMapOffsetY:: ds 1
 
-hFF98:: ds 1
-hFF99:: ds 1
-hFF9A:: ds 1
+hMapWidth:: ds 1
+hMapHeight:: ds 1
 
-hFF9B:: ds 1
-hFF9C:: ds 1
+hMapGroup:: ds 1
+hMapNumber:: ds 1
+hWarpNumber:: ds 1
+
 hFF9D:: ds 1
 hFF9E:: ds 1
 hFF9F:: ds 1
@@ -33,7 +37,7 @@ hFFA2:: ds 2
 hFFA4:: ds 1
 hFFA5:: ds 1
 hFFA6:: ds 1
-hFFA7:: ds 1
+hSimulatedJoypadState:: ds 1
 hFFA8:: ds 1
 hFFA9:: ds 1
 hFFAA:: ds 1
@@ -46,10 +50,7 @@ hFFAF:: ds 1
 hSCY:: ds 1
 hFFB1:: ds 1
 
-hFFB2:: ds 1
-hFFB3:: ds 1
-hFFB4:: ds 1
-hFFB5:: ds 1
+hMapAttrBank:: ds 4
 hScriptBank:: ds 1
 hFFB7:: ds 1
 hFFB8:: ds 1
@@ -61,9 +62,9 @@ hFFBD:: ds 1
 
 hTargetBank:: ds 1
 
-hFFBF:: ds 1 ; load map
+hFade:: ds 1 ; load map
 hFFC0:: ds 1
-hFFC1:: ds 1
+hScrollNumber:: ds 1
 hFFC2:: ds 1
 hFFC3:: ds 1
 hFFC4:: ds 1
@@ -84,7 +85,7 @@ hFFD2:: ds 1
 hFFD3:: ds 1
 hFFD4:: ds 1
 hFFD5:: ds 1
-hFFD6:: ds 1
+hFFD6:: ds 1 ; execute script?
 hFFD7:: ds 1
 hFFD8:: ds 1
 
